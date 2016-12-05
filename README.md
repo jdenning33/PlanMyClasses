@@ -1,10 +1,10 @@
-# Redux Todos Example
+# PlanMyClasses
 
 This project template was built with [Create React App](https://github.com/facebookincubator/create-react-app).
 
-## Available Scripts
+## Description
 
-In the project directory, you can run:
+This app is intended to run as a standalone web app that will allow University of New Mexico students to input schedule preferences and a desired course load and the app will display the users potential course schedules for a given semester. Coures loads will be sorted by the apps 'perceived course fit' for the user.
 
 ### `npm start`
 
@@ -31,4 +31,3 @@ If you aren’t satisfied with the build tool and configuration choices, you can
 Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-

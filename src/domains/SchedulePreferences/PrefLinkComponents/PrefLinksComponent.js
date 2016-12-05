@@ -7,6 +7,7 @@ const SetPrefLink = ( {preference, action} ) => (
                   clickAction={action(preference)} />
 )
 
+//  Displays a set of links delimmited by a '-'
 const PrefLinksComponent = ( { ENUM, action } ) => {
   var preferences = [];
   for(let preference in ENUM){
