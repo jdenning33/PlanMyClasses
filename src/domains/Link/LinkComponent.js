@@ -1,17 +1,20 @@
 import React, { PropTypes } from 'react'
 
-const LinkComponent = ( { text, onClick } ) => (
+const LinkComponent = ( { text, active, onClick } ) => (
 
     <a href="#" onClick={
         e => {
           e.preventDefault()
           onClick()
         }
-      }>{text}</a>
+      }>
+    { (active)? <b>{text}</b> : text }
+    </a>
 )
 
 LinkComponent.propTypes = {
   text: PropTypes.string.isRequired,
+  active: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired
 }
 

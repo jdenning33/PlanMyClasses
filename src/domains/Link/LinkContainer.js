@@ -2,8 +2,11 @@ import { connect } from 'react-redux'
 import LinkComponent from './LinkComponent'
 
 const mapStateToProps = (state, ownProps) => {
+  let tActive =
+      (typeof(ownProps.active) === "undefined")? false : ownProps.active;
   return {
-    text: ownProps.text
+    text: ownProps.text,
+    active: tActive
   }
 }
 

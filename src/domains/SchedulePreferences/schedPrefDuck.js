@@ -19,7 +19,7 @@ export const DESIRE_ENUM = {
 }
 
 const initialState = {
-  semester: [ SEMESTER_ENUM.F2016, SEMESTER_ENUM.F2017 ],
+  semester: SEMESTER_ENUM.F2016 ,
   campus: [ CAMPUS_ENUM.UNM_ABQ ] ,
   online_desire: DESIRE_ENUM.INDIFFERENT
 }
@@ -53,7 +53,7 @@ export const setOnlineDesire = (filter) => {
 
 
 //  REDUCERS
-const multiSelectReducer = (preferences, preference) => {
+const toggle = (preferences, preference) => {
   let newPrefs = preferences.filter( (pref) => pref !== preference )
   if(newPrefs.length !== preferences.length) return newPrefs
   return [...preferences, preference]
@@ -63,14 +63,11 @@ const schedPrefReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_SEMESTER:
       return Object.assign({},state,{
-        semester: multiSelectReducer(state.semester, action.filter)
-      })
-      /*Object.assign({}, state, {
         semester: action.filter
-      })*/
+      })
     case SET_CAMPUS:
       return Object.assign({}, state, {
-        campus: multiSelectReducer(state.campus, action.filter)
+        campus: toggle(state.campus, action.filter)
       })
     case SET_ONLINE_DESIRE:
       return Object.assign({}, state, {
