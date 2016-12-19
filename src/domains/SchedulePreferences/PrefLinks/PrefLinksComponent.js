@@ -5,7 +5,7 @@ import LinkContainer from '../../Link/LinkContainer'
 const SetPrefLink = ( {preference, active, action} ) => (
   <LinkContainer  text={preference.name}
                   active={active}
-                  clickAction={action(preference)} />
+                  clickAction={() => action(preference)} />
 )
 
 //  Displays a set of links delimmited by a '-'
@@ -24,7 +24,7 @@ const PrefLinksComponent = ( { ENUM, activeLinks, action } ) => {
           { (pref.key !== 0)? <span> - </span> : <span /> }
           <SetPrefLink  preference={pref}
                         active={activeLinks.some( (p) => p===pref)}
-                        action={action} />
+                        action={(pref) => action(pref)} />
           </span>
         )
       )}

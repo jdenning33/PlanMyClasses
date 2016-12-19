@@ -1,6 +1,6 @@
 //  CONSTANTS
 const initialState = {
-  desiredIDs: [ { id:'0001234' } ]
+  desiredIDs: [ { id:'0001234' }, { id: '0000355' } ]
 }
 
 //  ACTIONS

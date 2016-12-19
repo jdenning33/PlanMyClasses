@@ -1,11 +1,10 @@
 import React, { PropTypes } from 'react'
 import PrefLinksComponent from './PrefLinks/PrefLinksComponent'
-import { CAMPUS_ENUM, setCampus } from './schedPrefDuck'
-import { SEMESTER_ENUM, setSemester } from './schedPrefDuck'
-import { DESIRE_ENUM, setOnlineDesire } from './schedPrefDuck'
+import { CAMPUS_ENUM, SEMESTER_ENUM, DESIRE_ENUM} from './schedPrefDuck'
 
-const SchedPrefComponent = ( {activeLinks} ) => {
-  console.log(activeLinks);
+const SchedPrefComponent = ( {activeLinks,  setCampusClick,
+                                            setSemesterClick,
+                                            setOnlineDesireClick} ) => {
   return (
     <div>
       <div>
@@ -15,21 +14,21 @@ const SchedPrefComponent = ( {activeLinks} ) => {
           <b>Campus: </b>
           <PrefLinksComponent ENUM={CAMPUS_ENUM}
                               activeLinks={activeLinks}
-                              action={setCampus} />
+                              action={(campus) => setCampusClick(campus)} />
         </div>
 
         <div>
           <b>Change Semester: </b>
           <PrefLinksComponent ENUM={SEMESTER_ENUM}
                               activeLinks={activeLinks}
-                              action={setSemester} />
+                              action={(semester) => setSemesterClick(semester)} />
         </div>
 
         <div>
           <b>Online: </b>
           <PrefLinksComponent ENUM={DESIRE_ENUM}
                               activeLinks={activeLinks}
-                              action={setOnlineDesire} />
+                              action={(desire) => setOnlineDesireClick(desire)} />
         </div>
 
       </div>
