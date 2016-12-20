@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import DesiredCoursesComponent from './DesiredCoursesComponent'
-import { setRoute, ROUTE_ENUM } from '../../routes/routesDuck'
+import { setRoute, ROUTE_ENUM } from '../../routes/AppRouter'
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -11,7 +11,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     addCourseButtonAction: () => {
-      dispatch(setRoute(ROUTE_ENUM.COURSE_BROWSER))
+      setRoute(ROUTE_ENUM.COURSE_BROWSER)
     }
   }
 }

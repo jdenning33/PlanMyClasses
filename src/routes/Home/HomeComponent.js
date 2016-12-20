@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import LinkContainer from '../../domains/Link/LinkContainer'
-import { ROUTE_ENUM } from '../routesDuck'
+import { ROUTE_ENUM } from '../AppRouter'
 
 const HomeComponent = ( { todos, changeRoute } ) => (
   <div>

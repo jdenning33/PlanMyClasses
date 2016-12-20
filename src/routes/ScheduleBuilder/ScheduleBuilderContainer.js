@@ -16,6 +16,6 @@ const mapDispatchToProps = (dispatch) => {
 const ScheduleBuilderContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(RoutesComponent)
+)(ScheduleBuilderComponent)
 
 export default ScheduleBuilderContainer

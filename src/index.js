@@ -3,7 +3,7 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 import rootReducer from './rootReducer'
-import RoutesContainer from './routes/RoutesContainer'
+import AppRouter from './routes/AppRouter'
 
 //  creates a store from the apps root reducer
 //  this is where the application state is stored
@@ -15,7 +15,7 @@ const MOUNT_NODE = document.getElementById('root')
 
 var page = (
   <Provider store={store}>
-    <RoutesContainer />
+    <AppRouter />
   </Provider>
 )
 
