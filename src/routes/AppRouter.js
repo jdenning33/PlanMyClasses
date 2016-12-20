@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Route, Link, IndexRoute, hashHistory, browserHistory } from 'react-router'
+import { Router, Route, browserHistory } from 'react-router'
 import HomeContainer from './Home/HomeContainer'
 import ScheduleBuilderContainer from './ScheduleBuilder/ScheduleBuilderContainer'
 import CourseBrowserContainer from './CourseBrowser/CourseBrowserContainer'

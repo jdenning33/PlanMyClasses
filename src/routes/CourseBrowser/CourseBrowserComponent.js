@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 
 const CourseBrowserComponent = () => {
   return (
@@ -10,8 +10,8 @@ const CourseBrowserComponent = () => {
   )
 }
 
-CourseBrowserComponent.propTypes = {
-
-}
+// CourseBrowserComponent.propTypes = {
+//
+// }
 
 export default CourseBrowserComponent
