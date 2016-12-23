@@ -1,14 +1,15 @@
 import React from 'react'
-import { Router, Route, browserHistory } from 'react-router'
+import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import HomeContainer from './Home/HomeContainer'
 import ScheduleBuilderContainer from './ScheduleBuilder/ScheduleBuilderContainer'
 import CourseBrowserContainer from './CourseBrowser/CourseBrowserContainer'
+import PageNotFoundComponent from './PageNotFound/PageNotFoundComponent'
 
 //  Render Components
 const home = () => <HomeContainer />
 const schedule = () => <ScheduleBuilderContainer />
 const browser = () => <CourseBrowserContainer />
-const notFound = () => (<h1>404.. This page is not found!</h1>)
+const notFound = () => <PageNotFoundComponent />
 
 //  Route Names
 export const ROUTE_ENUM = {
@@ -17,6 +18,15 @@ export const ROUTE_ENUM = {
   COURSE_BROWSER: '/course-browser'
 }
 
+export const routes = (
+  <Route path={ROUTE_ENUM.HOME}>
+    <IndexRoute component={home} />
+    <Route path={ROUTE_ENUM.SCHEDULE_BUILDER} component={schedule} />
+    <Route path={ROUTE_ENUM.COURSE_BROWSER} component={browser} />
+    <Route path='*' component={notFound} />
+  </Route>
+)
+
 //  Function
 export const setRoute = (filter) => {
   browserHistory.push(filter);
@@ -24,12 +34,7 @@ export const setRoute = (filter) => {
 
 const AppRouter = () => {
   return (
-    <Router history={browserHistory}>
-      <Route path={ROUTE_ENUM.HOME} component={home} />
-      <Route path={ROUTE_ENUM.SCHEDULE_BUILDER} component={schedule} />
-      <Route path={ROUTE_ENUM.COURSE_BROWSER} component={browser} />
-      <Route path='*' component={notFound} />
-    </Router>
+    <Router history={browserHistory} routes={routes} />
   )
 }
 export default AppRouter

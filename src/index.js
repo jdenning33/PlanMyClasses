@@ -5,9 +5,13 @@ import { createStore } from 'redux'
 import rootReducer from './rootReducer'
 import AppRouter from './routes/AppRouter'
 
+
+// Grab the state from a global injected into server-generated HTML
+const preloadedState = window.__PRELOADED_STATE__
+
 //  creates a store from the apps root reducer
 //  this is where the application state is stored
-const store = createStore(rootReducer)
+const store = createStore(rootReducer, preloadedState)
 window.store = store
 console.log(store.getState())
 //  where to render. Attaches to html <div id='root'>
