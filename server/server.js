@@ -2,8 +2,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
-var CommentSchema = require('../model/CommentSchema');
-var dataAPIrouter = require('./dataAPIrouters/dataAPIrouter');
+var dataAPIrouter = require('./dataAPIrouter');
 var DB_LINK = process.env.DB_LINK;
 
 //and create our instances

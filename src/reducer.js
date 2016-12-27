@@ -7,9 +7,9 @@ import { combineReducers } from 'redux'
 import schedPrefReducer from './domains/SchedulePreferences/schedPrefDuck'
 import desiredCoursesReducer from './domains/DesiredCourses/desiredCoursesDuck'
 
-const rootReducer = combineReducers({
+const reducer = combineReducers({
   schedPrefReducer,
   desiredCoursesReducer
 })
 
-export default rootReducer
+export default reducer

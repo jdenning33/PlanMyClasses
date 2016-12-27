@@ -3,7 +3,6 @@ import axios from 'axios';
 // TODO: look into using dot-env store url in .env
 const dataURL = 'http://localhost:3001/api';
 export const COLLECTIONS_ENUM = {
-  COMMENTS:     { key:0, url:`${dataURL}/comments`  },
   SUBJECTS:     { key:1, url:`${dataURL}/subjects`  },
   COURSES:      { key:2, url:`${dataURL}/courses`   },
   SECTIONS:     { key:3, url:`${dataURL}/sections`  },
