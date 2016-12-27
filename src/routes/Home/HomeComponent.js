@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import LinkContainer from '../../domains/Link/LinkContainer'
 import { ROUTE_ENUM } from '../AppRouter'
 
-const HomeComponent = ( { todos, changeRoute } ) => (
+const HomeComponent = ( { todos, changeRoute, getComments } ) => (
   <div>
     <div>
       <h1> Plan My Classes </h1>
@@ -12,7 +12,10 @@ const HomeComponent = ( { todos, changeRoute } ) => (
       <br />
       <LinkContainer text='Browse Courses'
                 clickAction={() => changeRoute(ROUTE_ENUM.COURSE_BROWSER)} />
-    </div>
+      <br />
+      <LinkContainer text='Test Comments API'
+                clickAction={() => getComments()} />
+  </div>
   </div>
 )
 
