@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import LinkContainer from '../../domains/Link/LinkContainer'
 import { ROUTE_ENUM } from '../AppRouter'
 
-const HomeComponent = ( { todos, changeRoute, getComments } ) => (
+const HomeComponent = ( { todos, changeRoute, addSubject, eraseDB, populateDB } ) => (
   <div>
     <div>
       <h1> Plan My Classes </h1>
@@ -13,8 +13,15 @@ const HomeComponent = ( { todos, changeRoute, getComments } ) => (
       <LinkContainer text='Browse Courses'
                 clickAction={() => changeRoute(ROUTE_ENUM.COURSE_BROWSER)} />
       <br />
-      <LinkContainer text='Test Comments API'
-                clickAction={() => getComments()} />
+      <br />
+      <LinkContainer text='Erase the DataBase'
+                clickAction={() => eraseDB()} />
+      <br />
+      <LinkContainer text='Populate the DataBase'
+                clickAction={() => populateDB()} />
+      <br />
+      <LinkContainer text='Test add subject'
+                clickAction={() => addSubject()} />
   </div>
   </div>
 )

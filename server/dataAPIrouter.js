@@ -8,7 +8,7 @@ var COLLECTIONS_ENUM = {
   SUBJECTS:     { key:1, url:`${dataURL}/subjects`  , name:'subjects'   },
   COURSES:      { key:2, url:`${dataURL}/courses`   , name:'courses'    },
   SECTIONS:     { key:3, url:`${dataURL}/sections`  , name:'sections'   },
-  INSTRUCTORS:  { key:4, url:`${dataURL}/instuctors`, name:'instructors'}
+  INSTRUCTORS:  { key:4, url:`${dataURL}/instructors`, name:'instructors'}
 }
 
 // gets the mongoose model based on the collection name
@@ -24,13 +24,14 @@ const getModel = ( name ) => {
     case COLLECTIONS_ENUM.INSTRUCTORS.name:
       return instructorModel;
     default:
-      return ;
+      return;
   }
 }
 
 var dataAPIrouter = {
   addToRouter: (router) => {
     router.route('/:collection')
+
       .get(function(req, res) {
         let model = getModel(req.params.collection);
         model.find(function(err, data) {
@@ -39,6 +40,15 @@ var dataAPIrouter = {
           //responds with a json object of our database data.
           res.json(data)
         });
+      })
+
+      .delete(function(req,res) {
+        let model = getModel(req.params.collection);
+        model.remove( {}, function(err, data) {
+          if (err)
+            res.send(err);
+          res.json( { message: 'cookies and cream puffs!' } );
+        })
       })
 
       //post new data to the specified collection
@@ -54,10 +64,10 @@ var dataAPIrouter = {
           data[key] = req.body[key];
         };
 
-        data.save(function(err) {
+        data.save(function(err, savedData) {
           if (err)
             res.send(err);
-          res.json({ message: 'a '+req.params.collection+' item has been appended'  });
+          res.json( savedData );
         });
       });
 
@@ -78,10 +88,10 @@ var dataAPIrouter = {
           };
 
           // save it to mongo
-          data.save(function(err) {
+          data.save(function(err, savedData) {
             if (err)
               res.send(err);
-            res.json({ message: 'a '+req.params.collection+' item has been updated' });
+            res.json( savedData );
           });
         });
       })

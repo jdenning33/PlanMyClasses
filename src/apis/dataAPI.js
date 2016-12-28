@@ -3,18 +3,18 @@ import axios from 'axios';
 // TODO: look into using dot-env store url in .env
 const dataURL = 'http://localhost:3001/api';
 export const COLLECTIONS_ENUM = {
-  SUBJECTS:     { key:1, url:`${dataURL}/subjects`  },
-  COURSES:      { key:2, url:`${dataURL}/courses`   },
-  SECTIONS:     { key:3, url:`${dataURL}/sections`  },
-  INSTRUCTORS:  { key:4, url:`${dataURL}/instuctors`}
-}
+  SUBJECTS:     { key:1, url:`${dataURL}/subjects`    },
+  COURSES:      { key:2, url:`${dataURL}/courses`     },
+  SECTIONS:     { key:3, url:`${dataURL}/sections`    },
+  INSTRUCTORS:  { key:4, url:`${dataURL}/instructors` }
+};
 
 const dataAPI = {
   // request can be thought of as an Action passed to redux
   getAll: ( request ) => new Promise(
     (resolve, reject) => {
       axios.get(request.type.url, request.type)
-        .then(res => {
+        .then( res => {
           resolve(res.data);
         });
     }),
@@ -23,30 +23,37 @@ const dataAPI = {
   add: ( request ) => new Promise(
     (resolve, reject) => {
       axios.post(request.type.url, request.data)
-        .catch(err => {
+        .then( res => {
+          resolve(res.data);
+        })
+        .catch( err => {
           console.error(err);
         });
-      return request.data;
     }),
 
-  deleteComment: ( request ) => new Promise(
+  delete: ( request ) => new Promise(
     (resolve, reject) => {
-      axios.delete(`${request.type.url}/${request.id}`)
+      let url = (request.id)? `${request.type.url}/${request.id}` : request.type.url;
+      axios.delete(url)
         .then(res => {
-          console.log('Comment deleted');
+          console.log('Data deleted');
+          resolve(res.data);
         })
         .catch(err => {
           console.error(err);
         });
     }),
 
-  updateComment: ( request ) => new Promise(
+  update: ( request ) => new Promise(
     (resolve, reject) => {
       //sends the data id and new author/text to our api
       axios.put(`${request.type.url}/${request.id}`, request.data)
+        .then(res => {
+          resolve(res.data);
+        })
         .catch(err => {
           console.log(err);
-        })
+        });
     })
 }
 
