@@ -13,6 +13,7 @@ var router = express.Router();
 var port = process.env.API_PORT || 3001;
 
 //db config
+mongoose.Promise = global.Promise;
 mongoose.connect(DB_LINK);
 
 //now we should configure the API to use bodyParser and look for JSON data in the request body

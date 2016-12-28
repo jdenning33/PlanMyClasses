@@ -1,5 +1,4 @@
 import axios from 'axios';
-import dataAPI, { COLLECTIONS_ENUM } from '../src/apis/dataAPI';
 import $ from 'jquery'
 
 const handleSections = ( course ) => {
@@ -20,6 +19,7 @@ const handleSections = ( course ) => {
       }
 
     sections[jsonSection.number] = jsonSection;
+
   });
 
   return sections;
@@ -27,7 +27,6 @@ const handleSections = ( course ) => {
 
 const handleCourses = ( subject ) => {
   let courses = {};
-  let courseIDs = [];
 
   $(subject).find('course')
   .filter( (index, course) => {
@@ -42,17 +41,9 @@ const handleCourses = ( subject ) => {
       }
 
     courses[jsonCourse.number] = jsonCourse;
-
-    dataAPI.add(
-      { type: COLLECTIONS_ENUM.COURSES,
-        data: jsonCourse
-      })
-      .then( (res) => courseIDs.push(res._id) )
-      .catch( (err) => console.log(err) );
-
   });
 
-  return courseIDs;
+  return courses;
 };
 
 const handleSubjects = ( campus ) => {
@@ -63,12 +54,12 @@ const handleSubjects = ( campus ) => {
     return 1;
   })
   .each( (index, subject) => {
-    let courseIDs = handleCourses( subject );
+    let courses = handleCourses( subject );
 
     subjects[$(subject).attr('code')] = {
       code: $(subject).attr('code'),
       name: $(subject).attr('name'),
-      courseIDs: courseIDs
+      courses: courses
     } ;
 
   });
@@ -84,7 +75,7 @@ const handleCampus = ( xmlDoc ) => {
 
   $(xmlDoc).find('campus')
   .filter( (index, campus) => {
-    return $(campus).attr('code') === 'ABQ';
+    return 1;
   })
   .each( (index, campus) => {
     let subjects = handleSubjects(campus);
@@ -92,7 +83,7 @@ const handleCampus = ( xmlDoc ) => {
     campuses[$(campus).attr('code')] = {
       code: $(campus).attr('code'),
       name: $(campus).attr('name'),
-      subjectIDs: subjects
+      subjects: subjects
     }
   });
 
@@ -101,15 +92,17 @@ const handleCampus = ( xmlDoc ) => {
 
 //  loads the raw xml unm file then parses it to our json object that we'll
 //  use to populate the unm data db
-export const getRawUNMdata = () => {
+const buildUnmJsonModel = () => new Promise( (resolve, reject) => {
   axios.get('https://gist.githubusercontent.com/jdenning33/b7f33f04d96fe8012016f98bf231fc12/raw/d9d30cd28d246e8cf097dae79708f364334222b1/current.xml')
     .then( res => {
 
       var xmlDoc = res.data;
       let jsonSchedules = handleCampus( xmlDoc );
-      console.log( jsonSchedules );
+      resolve(jsonSchedules);
     })
     .catch( err => {
-      console.log(err);
+      reject(err);
     });
-};
+});
+
+export default buildUnmJsonModel;

@@ -7,7 +7,7 @@ var Schema = mongoose.Schema;
 var CourseSchema = new Schema({
   title: String,        // Intermediate Programming
   subjectID: mongoose.Schema.Types.ObjectId,      // ECE
-  number: String,         // 131
+  number: String,         // 206L
   description: String,  // An introductory course into ...
   credits: [ Number ],      // [ 3 , 4 ]
   sectionIDs: [ mongoose.Schema.Types.ObjectId ]  // [ 1200001231312, 010233231123 ]

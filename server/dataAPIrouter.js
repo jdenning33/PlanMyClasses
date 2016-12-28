@@ -72,11 +72,23 @@ var dataAPIrouter = {
       });
 
     router.route('/:collection/:data_id')
+      .get(function(req, res) {
+        let model = getModel(req.params.collection);
+        model.findById(req.params.data_id, function(err, data) {
+          if (err)
+            res.send(err);
+          //responds with a json object of our database data.
+          res.json(data)
+        });
+      })
+
       .put(function(req, res) {
         let model = getModel(req.params.collection);
         model.findById(req.params.data_id, function(err, data) {
           if (err)
             res.send(err);
+
+          if (!data) res.json('error: no data found');
 
           // Lets us iterate the values in the schema
           let fields = Object.keys(data.schema.paths);

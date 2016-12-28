@@ -2,7 +2,7 @@ import { connect }      from 'react-redux'
 import HomeComponent    from './HomeComponent'
 import { setRoute }     from '../AppRouter'
 import dataAPI, { COLLECTIONS_ENUM }  from '../../apis/dataAPI'
-import { getRawUNMdata } from '../../rawUNMdataHandler'
+import { dbCommitJsonModel } from '../../dbCommitJsonModel'
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -22,7 +22,7 @@ const mapDispatchToProps = (dispatch) => {
       dataAPI.delete( { type: COLLECTIONS_ENUM.INSTRUCTORS } );
     },
     populateDB: () => {
-      getRawUNMdata();
+      dbCommitJsonModel();
     },
     addSubject: () => {
       dataAPI.add(
