@@ -9,11 +9,6 @@ const iterateObject = ( object, act ) => {
   };
 };
 
-const handleInstructors = ( section, dbCourseId ) => new Promise(
-  (resolve, reject) => {
-    resolve( [ 1, 2, 3 ] );
-});
-
 // For each course -> Add the course to the db -> Add each of it's sections
 // to the db -> update the courses courseIDs
 const handleSections = ( course, dbCourseId ) => new Promise(
@@ -23,7 +18,6 @@ const handleSections = ( course, dbCourseId ) => new Promise(
   let sectionIDs = [];
 
   if(Object.keys(course.sections).length === 0) {
-    console.log('there are no sections');
     resolve(); //there are no sections
   }
 
@@ -35,32 +29,15 @@ const handleSections = ( course, dbCourseId ) => new Promise(
       console.log('adding section');
       promises.push(dataAPI.add(
         { type:COLLECTIONS_ENUM.SECTIONS,
-          data:section }
+          data: Object.assign(section, { courseID: dbCourseId } ) }
       )
       .then( (dbSection) => {
         sectionIDs.push( dbSection._id );
 
-        // Add each of the subjects courses to the DB
-        promises.push(handleInstructors( dbSection )
-        .then( (instructorIDs) => {
-          dbSection.instructorIDs = instructorIDs;
-
-          // Update the subject db listing
-          console.log('updating section');
-          promises.push(dataAPI.update(
-            { type: COLLECTIONS_ENUM.SECTIONS,
-              id: dbSection._id,
-              data: dbSection }
-          )
-          .then( () => {
-            //make sure we don't resolve until the last section
-            Promise.all(promises).then( () => {
-              resolve(sectionIDs);
-            });
-          })
-          .catch( (err) => reject(err) ));
-        })
-        .catch( (err) => reject(err) ));
+          //make sure we don't resolve until the last section
+          Promise.all(promises).then( () => {
+            resolve(sectionIDs);
+          });
       })
       .catch( (err) => reject(err) ));
     }
@@ -76,7 +53,6 @@ const handleCourses = ( subject, dbSubjectId ) => new Promise(
   let courseIDs = [];
 
   if(Object.keys(subject.courses).length === 0) {
-    console.log('there are no courses');
     resolve(); //there are no courses
   };
 
@@ -87,8 +63,8 @@ const handleCourses = ( subject, dbSubjectId ) => new Promise(
       //Add the subject to the DB
       console.log('adding course');
       promises.push(dataAPI.add(
-        { type:COLLECTIONS_ENUM.COURSES,
-          data:course }
+        { type: COLLECTIONS_ENUM.COURSES,
+          data: Object.assign(course, {subjectID: dbSubjectId} ) }
       )
       .then( (dbCourse) => {
         courseIDs.push( dbCourse._id );
@@ -134,12 +110,12 @@ const handleSubjects = (school) => new Promise(
   iterateObject( school.subjects,
     (subject) => {
 
-      if(!(subject.code === 'ECE' || subject.code === 'MATH')) return;
+      // if(!(subject.code === 'ECE' || subject.code === 'MATH')) return;
       //Add the subject to the DB
       console.log('adding subject');
       promises.push(dataAPI.add(
-        { type:COLLECTIONS_ENUM.SUBJECTS,
-          data:subject }
+        { type: COLLECTIONS_ENUM.SUBJECTS,
+          data: subject }
       )
       .then( (dbSubject) => {
         subjectIDs.push( dbSubject._id );
@@ -177,11 +153,16 @@ const handleSubjects = (school) => new Promise(
 
 export const dbCommitJsonModel = (jsonModel) => new Promise(
 (resolve, reject) => {
+
   if(jsonModel){
     let school = jsonModel['ABQ'];
-    handleSubjects(school).then( () => {
+    handleSubjects(school)
+    .then( () => {
       console.log('finished');
       resolve(jsonModel);
+    })
+    .catch( (err) => {
+      console.log(err)
     });
   }
 
@@ -189,9 +170,13 @@ export const dbCommitJsonModel = (jsonModel) => new Promise(
   .then((jsonModel) => new Promise( (resolve, reject) => {
     console.log(jsonModel);
     let school = jsonModel['ABQ'];
-    handleSubjects(school).then( () => {
+    handleSubjects(school)
+    .then( () => {
       console.log('finished');
       resolve(jsonModel);
+    })
+    .catch( (err) => {
+      console.log(err)
     });
   }))
   .then( (jsonModel) => resolve(jsonModel));

@@ -56,11 +56,9 @@ var dataAPIrouter = {
         let model = getModel(req.params.collection);
         var data = new model();
 
-        // Lets us iterate the values in the schema
-        let fields = Object.keys(data.schema.paths);
         // _id and _v are the final two fields, err if we try to set them
-        for(let i=0; i<fields.length-2; i++){
-          let key = fields[i];
+        for(let key in data.schema.paths){
+          if( key === '_id' || key === '__v' ) continue;
           data[key] = req.body[key];
         };
 
@@ -90,13 +88,11 @@ var dataAPIrouter = {
 
           if (!data) res.json('error: no data found');
 
-          // Lets us iterate the values in the schema
-          let fields = Object.keys(data.schema.paths);
-          // _id and _v are the final two fields, err if we try to set them
           // iterate through each field of the model, and update it if requested
-          for(let i=0; i<fields.length-2; i++){
-            let key = fields[i];
-            (data[key]) ? data[key] = req.body[key] : null;
+          // _id and _v are the final two fields, err if we try to set them
+          for(let key in data.schema.paths){
+            if( key === '_id' || key === '__v' ) continue;
+            (req.body[key]) ? data[key] = req.body[key] : null;
           };
 
           // save it to mongo

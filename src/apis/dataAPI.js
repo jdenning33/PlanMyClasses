@@ -11,9 +11,9 @@ export const COLLECTIONS_ENUM = {
 
 const dataAPI = {
   // request can be thought of as an Action passed to redux
-  getAll: ( request ) => new Promise(
+  get: ( request ) => new Promise(
     (resolve, reject) => {
-      axios.get(request.type.url, request.type)
+      axios.get(request.type.url, request.data)
         .then( res => {
           resolve(res.data);
         });

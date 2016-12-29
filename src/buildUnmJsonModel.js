@@ -1,6 +1,61 @@
 import axios from 'axios';
 import $ from 'jquery'
 
+const stripAndParseInt = ( str ) => {
+  let num = str.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\s\{\}\[\]\\\/]/gi, '');
+  return parseInt(num, 10);
+};
+
+const handleInstructors = ( section ) => {
+  let instructors = [];
+
+  $(section).find('instructor')
+  .filter( (index, section) => {
+    return 1;
+  })
+  .each( (index, instructor) => {
+    let name =  { first:  $(instructor).find('first').text(),
+                  last:   $(instructor).find('last').text()
+                };
+    let email = $(instructor).find('email').text();
+
+    let jsonInstructor =
+      { name: name,
+        email: email,
+      };
+
+    instructors.push(jsonInstructor);
+  });
+
+  return instructors;
+};
+
+const handleTimes = ( section ) => {
+  let times = [];
+
+  $(section).find('meeting-time')
+  .filter( (index, section) => {
+    return 1;
+  })
+  .each( (index, time) => {
+    let days = [];
+    $(time).find('day').each( (index, day) => { days.push($(day).text()) });
+
+    let jsonTime =
+      { days  : days,
+        start : stripAndParseInt( $(time).find('start-time').text() ),
+        end   : stripAndParseInt( $(time).find('end-time').text() ),
+        date : { start : $(time).find('start-date').text(),
+                  end   : $(time).find('end-date').text()
+                }
+      };
+
+    times.push(jsonTime);
+  });
+
+  return times;
+};
+
 const handleSections = ( course ) => {
   let sections = {};
 
@@ -12,10 +67,15 @@ const handleSections = ( course ) => {
     return parseInt( $(section).attr('number'), 10 ) < 100;
   })
   .each( (index, section) => {
+    let instructors = handleInstructors( section );
+    let times = handleTimes( section );
 
     let jsonSection =
-      { number: $(section).attr('number'),
-        crn:    $(section).attr('crn'),
+      { //courseID    : , //have to add this in the dbCommit
+        number      : $(section).attr('number'),
+        crn         : stripAndParseInt( $(section).attr('crn') ),
+        instructors : instructors,
+        times       : times
       }
 
     sections[jsonSection.number] = jsonSection;
@@ -34,10 +94,20 @@ const handleCourses = ( subject ) => {
   })
   .each( (index, course) => {
     let sections = handleSections( course );
+    let credits = [];
+
+    $(course).find('credits').each( (index, credit) => {
+      let cred = parseInt( $(credit).text() , 10 );
+      if( credits.find( (cre) => cre === cred ) ) return; //don't re-add the same val
+      credits.push( cred );
+    });
 
     let jsonCourse =
-      { number: $(course).attr('number'),
-        sections: sections
+      { title     : $(course).attr('title'),
+        number    : $(course).attr('number'),
+        description : $(course).find('catalog-description').text(),
+        credits   : credits,
+        sections  : sections  //get converted to sectionIDs during dbAdd
       }
 
     courses[jsonCourse.number] = jsonCourse;
@@ -51,7 +121,10 @@ const handleSubjects = ( campus ) => {
 
   $(campus).find('subject')
   .filter( (index, subject) => {
-    return 1;
+    return (  $(subject).attr('code') === 'ECE'   ||
+              $(subject).attr('code') === 'MATH'   ||
+              $(subject).attr('code') === 'CS'
+            );
   })
   .each( (index, subject) => {
     let courses = handleCourses( subject );
