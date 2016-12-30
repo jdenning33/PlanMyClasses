@@ -22,7 +22,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setCampusClick: (campus) => {
-      dispatch(setCampus(campus));
+      dispatch( setCampus(campus) );
     },
     setSemesterClick: (semester) => {
       dispatch(setSemester(semester));

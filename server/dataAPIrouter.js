@@ -34,12 +34,25 @@ var dataAPIrouter = {
 
       .get(function(req, res) {
         let model = getModel(req.params.collection);
-        model.find(function(err, data) {
-          if (err)
-            res.send(err);
-          //responds with a json object of our database data.
-          res.json(data)
-        });
+        if(!req.dataIDs){
+          model.find(function(err, data) {
+            if (err)
+              res.send(err);
+            res.json(data)
+          });
+        };
+
+        if(req.dataIDs){
+          let allData = [];
+          for(dataID in dataIDs){
+            model.findById(dataID, function(err, data) {
+              if (err)
+                res.send(err);
+              allData.push(data);
+            });
+          };
+          res.json(allData);
+        };
       })
 
       .delete(function(req,res) {

@@ -2,7 +2,7 @@ import { connect }      from 'react-redux'
 import HomeComponent    from './HomeComponent'
 import { setRoute }     from '../AppRouter'
 import dataAPI, { COLLECTIONS_ENUM }  from '../../apis/dataAPI'
-import { dbCommitJsonModel } from '../../dbCommitJsonModel'
+import { dbCommitJsonModel } from '../../dataHandling/dbCommitJsonModel'
 
 const mapStateToProps = (state, ownProps) => {
   return {
