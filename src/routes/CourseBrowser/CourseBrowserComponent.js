@@ -1,50 +1,64 @@
 import React from 'react';
-import { COLLECTIONS_ENUM } from '../../dataHandling/dataCache';
-import LinkContainer from '../../domains/Link/LinkContainer';
+import ClickableContainer from '../../domains/Clickable/ClickableContainer';
 
 
-// const SubjectComponent = ( {subject} ) => (
-//   <div>
-//     <span> {subject.name} </span>
-//     <br />
-//     <span> {subject.code} </span>
-//   </div>
-// );
-//
-// const SubjectsComponent = ( {subjects} ) => {
-//   console.log(subjects);
-//   // return(
-//   //   <div>alsdfj;asl</div>
-//   // )
-//   return (
-//     <span>
-//       {subjects.map( (subject) => (
-//           <span key={subject.code}>
-//           <SubjectComponent subject={subject} />
-//           </span>
-//         )
-//       )}
-//     </span>
-//   )
-// };
+const SubjectComponent = ( {subject} ) => {
+  let visual = (
+    <div>
+      <span> {subject.name} </span>
+      <br />
+      <span> {subject.code} </span>
+    </div>
+  )
+  return (<ClickableContainer node={visual}
+                             active={false}
+                             clickAction={()=>console.log('clicked it')} />)
+};
 
-const testRequest = {
-  type: COLLECTIONS_ENUM.SUBJECTS,
-  origin: 'courseBrowser',
-  dataIDs: ['586477cbc5d24f47c82d20f9',
-            '586477cbc5d24f47c82d20fa',
-            '586477cbc5d24f47c82d20fb']
-}
+const SubjectsComponent = ( {subjects, subjectIDs, fetchingIDs, getSubjects} ) => {
 
-const CourseBrowserComponent = ( {subjects, testDataCache} ) => {
+  //Check if we have all the data we need
+  let needToFetch = [];
+  subjectIDs.forEach( (id) => {
+    if(subjects[id] || fetchingIDs.some(fid => id===fid)) return;
+    else{
+      needToFetch.push(id);
+    }
+  });
+  //Request the data we still need from the dataCache
+  if(needToFetch.length !== 0) {
+    getSubjects(needToFetch);
+  }
+
+  return (
+    <span>
+      {subjectIDs.map( (id) => {
+        if(!subjects[id])
+        return (
+          <div key={id}>loading</div>
+        )
+        else
+        return (
+          <span key={id}>
+          <SubjectComponent subject={subjects[id]} />
+          </span>
+        )}
+      )}
+    </span>
+  )
+};
+
+const CourseBrowserComponent = ( {subjects, subjectIDs, fetchingIDs,
+                                  getSubjects} ) => {
+
   return (
     <div>
       <div>
         <h3> Course Browser </h3>
-        {/* <SubjectsComponent subjects={subjects} /> */}
-        <LinkContainer  text='Test dadta cache'
-                        active={false}
-                        clickAction={() => testDataCache(testRequest) } />
+        <SubjectsComponent  subjects={subjects}
+                            subjectIDs={subjectIDs}
+                            fetchingIDs={fetchingIDs}
+                            getSubjects={getSubjects} />
       </div>
     </div>
   )

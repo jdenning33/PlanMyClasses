@@ -1,23 +1,37 @@
 import { connect } from 'react-redux'
 import CourseBrowserComponent from './CourseBrowserComponent'
-import { dataCache } from '../../dataHandling/dataCache'
-// import xmlToJson from '../../dataHandling/xmlToJSON'
+import { dataCache, COLLECTIONS_ENUM } from '../../dataHandling/dataCache'
 
 const mapStateToProps = (state, ownProps) => {
-  // let xmlFile = '../../data/current.xml';
-  // let jsonFile = xmlToJson(xmlFile);
+
+  let subjectIDs = ['586477cbc5d24f47c82d20f9',
+                    '586477cbc5d24f47c82d20fa',
+                    '586477cbc5d24f47c82d20fb']
+
+  let subjects = state.dataCacheReducer.data.subjects;
+
+  let mySubjects = {};
+  subjectIDs.forEach( (id) => {
+    if(subjects[id]){
+      mySubjects[id] = subjects[id];
+    }
+  });
 
   return {
-    // subjects: state.dataCache.subjects,
-
+    subjects: mySubjects,
+    subjectIDs: subjectIDs,
+    fetchingIDs: state.dataCacheReducer.fetchingIDs
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    testDataCache : (request) => {
-      dispatch( dataCache.fetchIfNeeded(request) );
-    },
+    getSubjects: (subjectIDs) => {
+      dispatch( dataCache.fetchIfNeeded( {type:COLLECTIONS_ENUM.SUBJECTS,
+                                          originator: 'courseBrowser',
+                                          dataIDs: subjectIDs }
+                                        ) );
+    }
   }
 }
 
