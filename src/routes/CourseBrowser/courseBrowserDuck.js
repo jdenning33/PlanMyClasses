@@ -1,69 +1,48 @@
-import { addCourseID } from '../../domains/DesiredCourses/desiredCoursesDuck'
-import dataAPI, { COLLECTIONS_ENUM } from '../../apis/dataAPI'
 
 //  CONSTANTS
 const initialState = {
-  rootCard: 'ROOT',
-  isFetching: false,
-  expandedCards: {  { ECE, {101, {003}, {004}}, {131} },
-                    { MATH },
-                    { PENP } },
-  subjects: []
+  expandedIDs: [],
+  subjectIDs : ['586477cbc5d24f47c82d20f9',
+                '586477cbc5d24f47c82d20fa',
+                '586477cbc5d24f47c82d20fb']
 }
 
 //  ACTIONS
-const CARD_CLICKED = 'courseBrowser/CARD_CLICKED';
-const FETCH_SUBJECTS_REQUEST = 'courseBrowser/FETCHING_SUBJECTS';
-const FETCH_SUBJECTS_SUCCESS = 'courseBrowser/FETCHING_SUBJECTS';
-const FETCH_SUBJECTS_FAILURE = 'courseBrowser/FETCHING_SUBJECTS';
+const SUBJECT_CLICKED = 'courseBrowser/SUBJECT_CLICKED';
 
 //  ACTION CREATORS
-export const fetchSubjects = (campus) => {
-  return (dispatch) => {
-    dispatch( {type:FETCH_SUBJECTS_REQUEST} );
-    dataAPI.get( {type:COLLECTIONS_ENUM.SUBJECTS} )
-    .then( (data) => dispatch( {type: FETCH_SUBJECTS_SUCCESS, data: data}) )
-    .catch( (err) => dispatch( {type: FETCH_SUBJECTS_FAILURE, err : err }) );
-  }
-}
+export const courseBrowser = {
 
-export const addCourse = (filter) => {
-  return {
-    addCourseID(filter);
-  }
-}
-
-export const cardClicked = (cardID) => {
-  return {
-    type: CARD_CLICKED,
-    cardID: cardID
-  }
+  subjectClicked: (subjectID) => (
+    {
+      type: SUBJECT_CLICKED,
+      subjectID: subjectID
+    }
+  )
 }
 
 //  REDUCERS
 const courseBrowserReducer = (state = initialState, action) => {
   switch (action.type) {
-    case CARD_CLICKED:
+
+    case SUBJECT_CLICKED:
+      //remove the subject from expanded cards
+      let newExpandedIDs = [];
+      if( state.expandedIDs.length !== 0 ){
+        newExpandedIDs =
+            state.expandedIDs.filter((id) => action.subjectID !== id);
+      }
+      //if it wasn't in expanded cards, add it to expanded cards
+      if( newExpandedIDs.length === state.expandedIDs.length ){
+        newExpandedIDs.push(action.subjectID);
+      };
+
       return Object.assign({},state,{
-        rootCard: action.cardID
-      });
-    case FETCH_SUBJECTS_REQUEST:
-      return Object.assign({},state,{
-        isFetching:true
-      });
-    case FETCH_SUBJECTS_SUCCESS:
-      return Object.assign({},state,{
-        isFetching:false,
-        subjects: action.data
-      });
-    case FETCH_SUBJECTS_REQUEST:
-      return Object.assign({},state,{
-        isFetching:false,
-        console.log(action.err)
+        expandedIDs: newExpandedIDs
       });
     default:
       return state
   }
 }
 
-export default desiredCoursesReducer
+export default courseBrowserReducer

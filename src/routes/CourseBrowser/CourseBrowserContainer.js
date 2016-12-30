@@ -1,12 +1,11 @@
 import { connect } from 'react-redux'
 import CourseBrowserComponent from './CourseBrowserComponent'
 import { dataCache, COLLECTIONS_ENUM } from '../../dataHandling/dataCache'
+import { courseBrowser } from './courseBrowserDuck'
 
 const mapStateToProps = (state, ownProps) => {
 
-  let subjectIDs = ['586477cbc5d24f47c82d20f9',
-                    '586477cbc5d24f47c82d20fa',
-                    '586477cbc5d24f47c82d20fb']
+  let subjectIDs = state.courseBrowserReducer.subjectIDs;
 
   let subjects = state.dataCacheReducer.data.subjects;
 
@@ -20,7 +19,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     subjects: mySubjects,
     subjectIDs: subjectIDs,
-    fetchingIDs: state.dataCacheReducer.fetchingIDs
+    fetchingIDs: state.dataCacheReducer.fetchingIDs,
+    expandedIDs: state.courseBrowserReducer.expandedIDs
   }
 }
 
@@ -31,6 +31,9 @@ const mapDispatchToProps = (dispatch) => {
                                           originator: 'courseBrowser',
                                           dataIDs: subjectIDs }
                                         ) );
+    },
+    subjectClicked: (subjectID) => {
+      dispatch( courseBrowser.subjectClicked(subjectID) );
     }
   }
 }
