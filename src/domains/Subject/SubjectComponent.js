@@ -1,12 +1,12 @@
 import React from 'react';
 import ClickableContainer from '../../domains/Clickable/ClickableContainer';
-import CoursesComponent from '../Course/CoursesComponent';
+import CoursesContainer from '../Course/CoursesContainer';
 
 
 const Title = ( {subject, cardClicked} ) => {
   let text = (
     <div>
-      <span>{subject.code}: {subject.name}</span>
+      <span><b>{subject.code}: {subject.name}</b></span>
     </div>
   )
   return (<ClickableContainer node={text}
@@ -19,7 +19,7 @@ const ExpandedSubjectComponent = ( {subject, cardClicked} ) => (
     <Title  subject={subject}
             cardClicked={cardClicked} />
     <span />
-    <CoursesComponent courseIDs={subject.courseIDs} />
+    <CoursesContainer courseIDs={subject.courseIDs} />
   </div>
 );
 

@@ -100,8 +100,8 @@ export const dataCache = {
   fetchIfNeeded: (request) => (dispatch, getState) => {
     let dataState = getState().dataCacheReducer;
     let dataToFetch = isDataCached(request, dataState);
-    if(!dataToFetch.length) dispatch(receiveData(request));
-    dispatch( fetchData(request, dataToFetch) );
+    if(!dataToFetch.length) dispatch(receiveData(request))
+    else dispatch( fetchData(request, dataToFetch) );
   }
 };
 

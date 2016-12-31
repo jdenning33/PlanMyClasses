@@ -36,7 +36,6 @@ const dataAPI = {
       let url = (request.id)? `${request.type.url}/${request.id}` : request.type.url;
       axios.delete(url)
         .then(res => {
-          console.log('Data deleted');
           resolve(res.data);
         })
         .catch(err => {

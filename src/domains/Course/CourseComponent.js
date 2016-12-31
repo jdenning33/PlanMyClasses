@@ -1,12 +1,13 @@
 import React from 'react';
-import ClickableContainer from '../../domains/Clickable/ClickableContainer';
+import ClickableContainer from '../Clickable/ClickableContainer';
 import { COLLECTIONS_ENUM } from '../../dataHandling/dataCache'
+import SectionsContainer from '../Section/SectionsContainer'
 
 
 const Title = ( {course, cardClicked} ) => {
   let text = (
     <div>
-      <span>--{course.number}: {course.title}</span>
+      <span> ~ {course.number}: {course.title}</span>
     </div>
   )
   return (<ClickableContainer node={text}
@@ -14,11 +15,30 @@ const Title = ( {course, cardClicked} ) => {
                              clickAction={()=>cardClicked(course._id)} />)
 }
 
-const ExpandedCourseComponent = ( {course, cardClicked} ) => (
+const ToggleDesiredButton = ( {courseID, isDesired, toggleDesired} ) => {
+  let node = (
+    <div><b>{
+        isDesired?
+        'Remove from Course Load' :
+        'Add to Course Load'
+    }</b></div>
+  )
+  return (<ClickableContainer
+    node={node}
+    active={false}
+    clickAction={()=>toggleDesired(courseID, COLLECTIONS_ENUM.COURSES)} /> )
+}
+
+const ExpandedCourseComponent = ( {course, cardClicked,
+                                    isDesired, toggleDesired} ) => (
   <div>
     <Title  course={course}
             cardClicked={cardClicked} />
-    <span>display courses</span>
+    <ToggleDesiredButton courseID={course._id}
+            isDesired={isDesired}
+            toggleDesired={toggleDesired} />
+    <span />
+    <SectionsContainer sectionIDs={course.sectionIDs} />
   </div>
 );
 
@@ -27,15 +47,27 @@ const LoadingComponent = ( ) => (
     loading
   </div>
 );
+const FailedComponent = ( ) => (
+  <div>
+    failed
+  </div>
+);
 
 
-
-const Component = ( {course, courseID, expanded, fetchingIDs,
-                            cardClicked, getData} ) => {
-  if(!course) return ( <LoadingComponent /> )
+const Component = ( {course, courseID, expanded, isDesired, fetchingIDs,
+                            cardClicked, toggleDesired, getData} ) => {
+  if(!course){
+    if(fetchingIDs.length && fetchingIDs.some(id=>id===courseID)) {
+      return ( <LoadingComponent /> );
+    }else{
+      return ( <FailedComponent /> );
+    }
+  }
   else if(expanded){
     return (<ExpandedCourseComponent course={course}
-                              cardClicked={cardClicked} />);
+                              cardClicked={cardClicked}
+                              isDesired={isDesired}
+                              toggleDesired={toggleDesired} />);
   }
   else{
     return (<Title course={course} cardClicked={cardClicked} />);

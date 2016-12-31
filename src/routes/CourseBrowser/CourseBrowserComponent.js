@@ -1,5 +1,6 @@
 import React from 'react';
-import SubjectsComponent from '../../domains/Subject/SubjectsComponent'
+// import SubjectsComponent from '../../domains/Subject/SubjectsComponent'
+import SubjectsContainer from '../../domains/Subject2/SubjectsContainer'
 
 
 const CourseBrowserComponent = ( {subjects, subjectIDs, fetchingIDs, expandedIDs,
@@ -9,12 +10,14 @@ const CourseBrowserComponent = ( {subjects, subjectIDs, fetchingIDs, expandedIDs
     <div>
       <div>
         <h3> Course Browser </h3>
-        <SubjectsComponent  subjects={subjects}
+        {/* <SubjectsComponent  subjects={subjects}
                             subjectIDs={subjectIDs}
                             fetchingIDs={fetchingIDs}
                             expandedIDs={expandedIDs}
                             getData={getData}
-                            cardClicked={cardClicked}/>
+                            cardClicked={cardClicked}/> */}
+        <span />
+        <SubjectsContainer subjectIDs={subjectIDs} />
       </div>
     </div>
   )

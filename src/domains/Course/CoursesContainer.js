@@ -1,12 +1,9 @@
 import { connect } from 'react-redux'
 import CoursesComponent from './CoursesComponent'
-import { dataCache } from '../../dataHandling/dataCache'
-import { courseBrowser } from '../../routes/CourseBrowser/courseBrowserDuck'
 
 const mapStateToProps = (state, ownProps) => {
 
   let courseIDs = ownProps.courseIDs;
-
   let courses = state.dataCacheReducer.data.courses;
 
   let myCourses = {};
@@ -17,13 +14,15 @@ const mapStateToProps = (state, ownProps) => {
   });
 
   return {
-    courses: myCourses,           //The subject data that has been loaded
-    courseIDs: courseIDs,       //The data we need to display regardless of wheter or not its loaded
+    courses: myCourses,
+    courseIDs: courseIDs,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
+  return{
 
+  }
 }
 
 const CoursesContainer = connect(

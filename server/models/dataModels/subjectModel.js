@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 //create new instance of the mongoose.schema. the schema takes an object that shows
 //the shape of your database entries.
 var SubjectSchema = new Schema({
-  name: {},     //Electrical and Computer Engineering
+  name: String,     //Electrical and Computer Engineering
   code: String,     //ECE
   courseIDs: [ mongoose.Schema.Types.ObjectId ]
 });
