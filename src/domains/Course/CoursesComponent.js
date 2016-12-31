@@ -28,7 +28,7 @@ class CoursesComponent extends React.Component{
       <span>
         {my.courseIDs.map( (courseID) => (
             <span key={courseID}>
-              <CourseContainer  courseID={courseID} />
+              <CourseContainer  courseID={courseID}  />
             </span>
           )
         )}

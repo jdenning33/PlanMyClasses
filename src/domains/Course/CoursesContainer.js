@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 import CoursesComponent from './CoursesComponent'
 
+//Just requires an array of courseIDs
 const mapStateToProps = (state, ownProps) => {
 
   let courseIDs = ownProps.courseIDs;

@@ -1,23 +1,26 @@
 import { connect } from 'react-redux'
 import CourseComponent from './CourseComponent'
 import { dataCache } from '../../dataHandling/dataCache'
+import { scheduleBuilder } from '../../routes/ScheduleBuilder/scheduleBuilderDuck'
 import { courseBrowser } from '../../routes/CourseBrowser/courseBrowserDuck'
-import { desiredCourses } from '../DesiredCourses/desiredCoursesDuck'
 
 const mapStateToProps = (state, ownProps) => {
+
+  let path = window.location.pathname;
 
   let course = state.dataCacheReducer.data.courses[ownProps.courseID];
 
   //decide if the card should be expanded based on the expandedIDs
   let expanded = false;
-  let expandedIDs = state.courseBrowserReducer.expandedIDs;
-  if(expandedIDs.length !== 0){
+  let expandedIDs;
+  expandedIDs = state.courseBrowserReducer.expandedIDs[path];
+  if(expandedIDs && expandedIDs.length !== 0){
     expanded = expandedIDs.some((id) => ownProps.courseID===id);
   }
 
   //check if the card is already in the desired course load
   let isDesired = false;
-  let desiredIDs = state.desiredCoursesReducer.desiredIDs;
+  let desiredIDs = state.scheduleBuilderReducer.desiredIDs;
   isDesired = desiredIDs[ownProps.courseID] ? true:false;
 
   return {
@@ -41,7 +44,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch( courseBrowser.cardClicked(dataID) );
     },
     toggleDesired: (dataID, collection) => {
-      dispatch( desiredCourses.toggleDesired(dataID, collection) );
+      dispatch( scheduleBuilder.toggleDesired(dataID, collection) );
     }
   }
 }

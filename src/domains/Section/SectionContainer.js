@@ -5,12 +5,15 @@ import { courseBrowser } from '../../routes/CourseBrowser/courseBrowserDuck'
 
 const mapStateToProps = (state, ownProps) => {
 
+  let path = window.location.pathname;
+
   let section = state.dataCacheReducer.data.sections[ownProps.sectionID];
 
   //decide if the card should be expanded based on the expandedIDs
   let expanded = false;
-  let expandedIDs = state.courseBrowserReducer.expandedIDs;
-  if(expandedIDs.length !== 0){
+  let expandedIDs;
+  expandedIDs = state.courseBrowserReducer.expandedIDs[path];
+  if(expandedIDs && expandedIDs.length !== 0){
     expanded = expandedIDs.some((id) => ownProps.sectionID===id);
   }
 

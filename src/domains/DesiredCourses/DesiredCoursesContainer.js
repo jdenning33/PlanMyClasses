@@ -3,8 +3,16 @@ import DesiredCoursesComponent from './DesiredCoursesComponent'
 import { setRoute, ROUTE_ENUM } from '../../routes/AppRouter'
 
 const mapStateToProps = (state, ownProps) => {
+
+  let desiredIDs = [];
+  for(let desiredID in state.scheduleBuilderReducer.desiredIDs){
+    if(desiredID){
+      desiredIDs.push(desiredID);
+    }
+  }
+
   return {
-    currentCourses: state.desiredCoursesReducer.desiredIDs
+    courseIDs: desiredIDs
   }
 }
 

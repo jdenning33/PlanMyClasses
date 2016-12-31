@@ -4,6 +4,8 @@ import HomeContainer from './Home/HomeContainer'
 import ScheduleBuilderContainer from './ScheduleBuilder/ScheduleBuilderContainer'
 import CourseBrowserContainer from './CourseBrowser/CourseBrowserContainer'
 import PageNotFoundComponent from './PageNotFound/PageNotFoundComponent'
+import { courseBrowser } from './CourseBrowser/courseBrowserDuck'
+
 
 //  Render Components
 const home = () => <HomeContainer />

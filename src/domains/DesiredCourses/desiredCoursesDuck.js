@@ -17,8 +17,6 @@ export const addCourseID = (filter) => {
 
 export const desiredCourses = {
   toggleDesired: (dataID, collection) => {
-    console.log(dataID);
-    console.log(collection);
     return{
       type: TOGGLE_DESIRED,
       dataID: dataID,

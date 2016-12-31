@@ -1,48 +1,35 @@
 import React from 'react';
-import SubjectComponent from './SubjectComponent';
-import {COLLECTIONS_ENUM} from '../../dataHandling/dataCache'
+import SubjectContainer from './SubjectContainer';
 
 
-const SubjectsComponent = ( {subjects, subjectIDs, fetchingIDs, expandedIDs,
-                              cardClicked, getData} ) => {
-
-  //Check if we have all the data we need
-  let needToFetch = [];
-  subjectIDs.forEach( (id) => {
-    if(subjects[id] || fetchingIDs.some(fid => id===fid)) return;
-    else{
-      needToFetch.push(id);
-    }
-  });
-  //Request the data we still need from the dataCache
-  if(needToFetch.length !== 0) {
-    getData(needToFetch, COLLECTIONS_ENUM.SUBJECTS);
+class SubjectsComponent extends React.Component{
+  constructor( {subjects, subjectIDs} ){
+    super();
   }
 
-  return (
-    <span>
-      {subjectIDs.map( (id) => {
-        if(!subjects[id])
-        return (
-          <div key={id}>loading</div>
-        )
-        else{
-          let expanded = false;
-          if(expandedIDs.length !== 0){
-            expanded = expandedIDs.some((eid) => id===eid);
-          }
-          return (
-            <span key={id}>
-            <SubjectComponent subject={subjects[id]}
-                              expanded={expanded}
-                              cardClicked={cardClicked} />
+  render(){
+    let my = this.props;
+
+    if(Object.keys(my.subjects).length === my.subjectIDs.length){
+      my.subjectIDs.sort( (id1, id2) => {
+        if(!my.subjects[id1] || !my.subjects[id2]) return 0;
+        else {
+          return my.subjects[id1].code - my.subjects[id2].code;
+        }
+      });
+    }
+
+    return(
+      <span>
+        {my.subjectIDs.map( (subjectID) => (
+            <span key={subjectID}>
+              <SubjectContainer  subjectID={subjectID} />
             </span>
           )
-        }
-      }
-    )}
-    </span>
-  )
+        )}
+      </span>
+    )
+  }
 };
 
 export default SubjectsComponent

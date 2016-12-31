@@ -1,27 +1,15 @@
 import React, { PropTypes } from 'react'
 import LinkContainer from '../Link/LinkContainer'
+import CoursesContainer from '../Course/CoursesContainer'
 
-const CurrentCourses = ( {courses} ) => (
-  <span>
-    {courses.map((course) => (
-        <span key={course.id}>
-          <br/>
-          {course.id}
-        </span>
-      )
-    )}
-  </span>
-)
 
-const DesiredCoursesComponent = ( { currentCourses,
-                                    addCourseButtonAction} ) => {
+const DesiredCoursesComponent = ( { courseIDs, addCourseButtonAction } ) => {
   return (
     <div>
       <div>
         <h3> Desired Courses </h3>
         <div>
-          <b>Current Courses</b>
-          <CurrentCourses     courses={currentCourses}/>
+          <CoursesContainer courseIDs={courseIDs} />
           <br/>
           <LinkContainer    text='Add Course'
                             active={false}
@@ -34,7 +22,7 @@ const DesiredCoursesComponent = ( { currentCourses,
 }
 
 DesiredCoursesComponent.propTypes = {
-  currentCourses: PropTypes.array.isRequired,
+  courseIDs: PropTypes.array.isRequired,
   addCourseButtonAction: PropTypes.func.isRequired
 }
 

@@ -1,7 +1,7 @@
 
 //  CONSTANTS
 const initialState = {
-  expandedIDs: [],
+  expandedIDs: {},
   subjectIDs : ['586477cbc5d24f47c82d20f9',
                 '586477cbc5d24f47c82d20fa',
                 '586477cbc5d24f47c82d20fb']
@@ -26,16 +26,23 @@ const courseBrowserReducer = (state = initialState, action) => {
   switch (action.type) {
 
     case CARD_CLICKED:
+      let path = window.location.pathname;
       //remove the subject from expanded cards
-      let newExpandedIDs = [];
-      if( state.expandedIDs.length !== 0 ){
-        newExpandedIDs =
-            state.expandedIDs.filter((id) => action.cardID !== id);
+      let newExpandedIDs = state.expandedIDs;
+      if( !newExpandedIDs[path] ) newExpandedIDs[path] = [];
+      let preLength = newExpandedIDs[path].length;
+      console.log(newExpandedIDs[path]);
+      if( newExpandedIDs[path].length !== 0 ){
+        newExpandedIDs[path] =
+            newExpandedIDs[path].filter((id) => action.cardID !== id);
       }
+      console.log(newExpandedIDs[path])
+
       //if it wasn't in expanded cards, add it to expanded cards
-      if( newExpandedIDs.length === state.expandedIDs.length ){
-        newExpandedIDs.push(action.cardID);
+      if( newExpandedIDs[path] && newExpandedIDs[path].length === preLength ){
+        newExpandedIDs[path].push(action.cardID);
       };
+      console.log(newExpandedIDs[path])
 
       return Object.assign({},state,{
         expandedIDs: newExpandedIDs
