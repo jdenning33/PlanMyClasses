@@ -1,9 +1,10 @@
 import React from 'react';
 import SubjectComponent from './SubjectComponent';
+import {COLLECTIONS_ENUM} from '../../dataHandling/dataCache'
 
 
 const SubjectsComponent = ( {subjects, subjectIDs, fetchingIDs, expandedIDs,
-                              subjectClicked, getSubjects} ) => {
+                              cardClicked, getData} ) => {
 
   //Check if we have all the data we need
   let needToFetch = [];
@@ -15,7 +16,7 @@ const SubjectsComponent = ( {subjects, subjectIDs, fetchingIDs, expandedIDs,
   });
   //Request the data we still need from the dataCache
   if(needToFetch.length !== 0) {
-    getSubjects(needToFetch);
+    getData(needToFetch, COLLECTIONS_ENUM.SUBJECTS);
   }
 
   return (
@@ -34,7 +35,7 @@ const SubjectsComponent = ( {subjects, subjectIDs, fetchingIDs, expandedIDs,
             <span key={id}>
             <SubjectComponent subject={subjects[id]}
                               expanded={expanded}
-                              subjectClicked={subjectClicked} />
+                              cardClicked={cardClicked} />
             </span>
           )
         }

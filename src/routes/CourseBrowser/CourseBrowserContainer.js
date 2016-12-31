@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import CourseBrowserComponent from './CourseBrowserComponent'
-import { dataCache, COLLECTIONS_ENUM } from '../../dataHandling/dataCache'
+import { dataCache } from '../../dataHandling/dataCache'
 import { courseBrowser } from './courseBrowserDuck'
 
 const mapStateToProps = (state, ownProps) => {
@@ -17,23 +17,23 @@ const mapStateToProps = (state, ownProps) => {
   });
 
   return {
-    subjects: mySubjects,
-    subjectIDs: subjectIDs,
-    fetchingIDs: state.dataCacheReducer.fetchingIDs,
+    subjects: mySubjects,         //The subject data that has been loaded
+    subjectIDs: subjectIDs,       //The data we need to display regardless of wheter or not its loaded
+    fetchingIDs: state.dataCacheReducer.fetchingIDs,  //data we are fetching
     expandedIDs: state.courseBrowserReducer.expandedIDs
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getSubjects: (subjectIDs) => {
-      dispatch( dataCache.fetchIfNeeded( {type:COLLECTIONS_ENUM.SUBJECTS,
+    getData: (dataIDs, collection) => {
+      dispatch( dataCache.fetchIfNeeded( {type: collection,
                                           originator: 'courseBrowser',
-                                          dataIDs: subjectIDs }
+                                          dataIDs: dataIDs }
                                         ) );
     },
-    subjectClicked: (subjectID) => {
-      dispatch( courseBrowser.subjectClicked(subjectID) );
+    cardClicked: (dataID) => {
+      dispatch( courseBrowser.cardClicked(dataID) );
     }
   }
 }

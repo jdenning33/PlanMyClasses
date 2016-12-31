@@ -63,27 +63,32 @@ const receiveData = (request, data) => (
 const isDataCached = (request, dataState) => {
   let needToFetch = [];
 
-  for(let dataID in request.dataIDs){
-    if( !(dataState.data[request.type.name].dataID) &&
+  request.dataIDs.forEach(dataID => {
+    if( !(dataState.data[request.type.name][dataID]) &&
         !(dataState.fetchingIDs.some( (id) => id===dataID) )){
       needToFetch.push(dataID);
     };
-  };
+  });
   return needToFetch;
 };
 
 const fetchData = (request, dataIDs) => (dispatch) => {
   dispatch( requestData(request) );
-  return (
-    dataAPI.get(
+
+  let promises = [];
+  dataIDs.forEach(dataID =>
+      promises.push(dataAPI.get(
       { type    : request.type,
-        dataIDs : dataIDs
-      }
+        dataID : dataID
+      })
+      .then(data => {
+        dispatch(receiveData(request, data))
+      })
+      .catch(err => console.log(err) ))
     )
-    .then(data => {
-      dispatch(receiveData(request, data))
-    })
-    .catch(err => console.log(err) )
+
+  return (
+    Promise.all(promises)
   );
 };
 
@@ -95,8 +100,8 @@ export const dataCache = {
   fetchIfNeeded: (request) => (dispatch, getState) => {
     let dataState = getState().dataCacheReducer;
     let dataToFetch = isDataCached(request, dataState);
-    if(!dataToFetch) dispatch(receiveData(request))
-    else dispatch( fetchData(request, dataToFetch) );
+    if(!dataToFetch.length) dispatch(receiveData(request));
+    dispatch( fetchData(request, dataToFetch) );
   }
 };
 
@@ -104,16 +109,19 @@ const dataCacheReducer = (state = initialState, action) => {
   switch (action.type){
 
     case dataCacheActions.FETCH_DATA_REQUEST:
+      let newFetchingIDs = [];
+      state.fetchingIDs.forEach((id)=>newFetchingIDs.push(id));
+      action.request.dataIDs.forEach((id)=>newFetchingIDs.push(id));
+
       return Object.assign({}, state, {
-        fetchingIDs: (action.request.dataIDs).concat(state.fetchingIDs)
+        fetchingIDs: newFetchingIDs
       });
 
     case dataCacheActions.FETCH_DATA_SUCCESS:
       let collection = action.request.type.name;
       let newData = Object.assign({},state.data);
 
-      action.data.forEach( data => newData[collection][data._id] = data );
-
+      newData[collection][action.data._id] = action.data ;
       return Object.assign({}, state, {
         fetchingIDs: state.fetchingIDs.filter( (id) => (
           !(action.request.dataIDs).some( (id2) => id2===id )

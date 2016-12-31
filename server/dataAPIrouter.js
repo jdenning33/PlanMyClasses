@@ -34,25 +34,13 @@ var dataAPIrouter = {
 
       .get(function(req, res) {
         let model = getModel(req.params.collection);
-        if(!req.dataIDs){
-          model.find(function(err, data) {
-            if (err)
-              res.send(err);
-            res.json(data)
-          });
-        };
 
-        if(req.dataIDs){
-          let allData = [];
-          for(dataID in dataIDs){
-            model.findById(dataID, function(err, data) {
-              if (err)
-                res.send(err);
-              allData.push(data);
-            });
-          };
-          res.json(allData);
-        };
+        model.find(function(err, data) {
+          if (err)
+            res.send(err);
+          res.json(data)
+        });
+
       })
 
       .delete(function(req,res) {

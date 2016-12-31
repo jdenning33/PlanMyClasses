@@ -3,7 +3,7 @@ import SubjectsComponent from '../../domains/Subject/SubjectsComponent'
 
 
 const CourseBrowserComponent = ( {subjects, subjectIDs, fetchingIDs, expandedIDs,
-                                  getSubjects, subjectClicked} ) => {
+                                  getData, cardClicked} ) => {
 
   return (
     <div>
@@ -13,8 +13,8 @@ const CourseBrowserComponent = ( {subjects, subjectIDs, fetchingIDs, expandedIDs
                             subjectIDs={subjectIDs}
                             fetchingIDs={fetchingIDs}
                             expandedIDs={expandedIDs}
-                            getSubjects={getSubjects}
-                            subjectClicked={subjectClicked}/>
+                            getData={getData}
+                            cardClicked={cardClicked}/>
       </div>
     </div>
   )

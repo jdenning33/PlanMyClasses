@@ -8,15 +8,15 @@ const initialState = {
 }
 
 //  ACTIONS
-const SUBJECT_CLICKED = 'courseBrowser/SUBJECT_CLICKED';
+const CARD_CLICKED = 'courseBrowser/CARD_CLICKED';
 
 //  ACTION CREATORS
 export const courseBrowser = {
 
-  subjectClicked: (subjectID) => (
+  cardClicked: (cardID) => (
     {
-      type: SUBJECT_CLICKED,
-      subjectID: subjectID
+      type: CARD_CLICKED,
+      cardID: cardID
     }
   )
 }
@@ -25,16 +25,16 @@ export const courseBrowser = {
 const courseBrowserReducer = (state = initialState, action) => {
   switch (action.type) {
 
-    case SUBJECT_CLICKED:
+    case CARD_CLICKED:
       //remove the subject from expanded cards
       let newExpandedIDs = [];
       if( state.expandedIDs.length !== 0 ){
         newExpandedIDs =
-            state.expandedIDs.filter((id) => action.subjectID !== id);
+            state.expandedIDs.filter((id) => action.cardID !== id);
       }
       //if it wasn't in expanded cards, add it to expanded cards
       if( newExpandedIDs.length === state.expandedIDs.length ){
-        newExpandedIDs.push(action.subjectID);
+        newExpandedIDs.push(action.cardID);
       };
 
       return Object.assign({},state,{

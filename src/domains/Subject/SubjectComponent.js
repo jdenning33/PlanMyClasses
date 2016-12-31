@@ -1,8 +1,9 @@
 import React from 'react';
 import ClickableContainer from '../../domains/Clickable/ClickableContainer';
+import CoursesComponent from '../Course/CoursesComponent';
 
 
-const Title = ( {subject, subjectClicked} ) => {
+const Title = ( {subject, cardClicked} ) => {
   let text = (
     <div>
       <span>{subject.code}: {subject.name}</span>
@@ -10,24 +11,25 @@ const Title = ( {subject, subjectClicked} ) => {
   )
   return (<ClickableContainer node={text}
                              active={false}
-                             clickAction={()=>subjectClicked(subject._id)} />)
+                             clickAction={()=>cardClicked(subject._id)} />)
 }
 
-const ExpandedSubjectComponent = ( {subject, subjectClicked} ) => (
+const ExpandedSubjectComponent = ( {subject, cardClicked} ) => (
   <div>
     <Title  subject={subject}
-            subjectClicked={subjectClicked} />
-    <span>display courses</span>
+            cardClicked={cardClicked} />
+    <span />
+    <CoursesComponent courseIDs={subject.courseIDs} />
   </div>
 );
 
-const SubjectComponent = ( {subject, expanded, subjectClicked} ) => {
+const SubjectComponent = ( {subject, expanded, cardClicked} ) => {
   if(expanded){
     return (<ExpandedSubjectComponent subject={subject}
-                              subjectClicked={subjectClicked} />);
+                              cardClicked={cardClicked} />);
   }
   else{
-    return (<Title subject={subject} subjectClicked={subjectClicked} />);
+    return (<Title subject={subject} cardClicked={cardClicked} />);
   }
 };
 

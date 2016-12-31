@@ -13,7 +13,7 @@ const dataAPI = {
   // request can be thought of as an Action passed to redux
   get: ( request ) => new Promise(
     (resolve, reject) => {
-      axios.get(request.type.url, request.data)
+      axios.get(`${request.type.url}/${request.dataID}`)
         .then( res => {
           resolve(res.data);
         });
