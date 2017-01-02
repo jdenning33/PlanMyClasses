@@ -16,7 +16,8 @@ const dataAPI = {
       axios.get(`${request.type.url}/${request.dataID}`)
         .then( res => {
           resolve(res.data);
-        });
+        })
+        .catch( err => console.error(err) );
     }),
 
   // request needs a type (i.e. 'subject') and data to add

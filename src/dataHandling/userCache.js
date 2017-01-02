@@ -1,3 +1,5 @@
+// import dataAPI, { COLLECTIONS_ENUM } from '../apis/dataAPI';
+
 // All external data is loaded here, anything that loads should have a reducer
 // case to handle new data being fetched, and new data being received
 
@@ -12,20 +14,16 @@ import dataAPI from '../apis/dataAPI'
 //  CONSTANTS
 const dataURL = 'http://localhost:3001/api';
 export const COLLECTIONS_ENUM = {
-  SUBJECTS:     { key:1, url:`${dataURL}/subjects`    , name:'subjects'    },
-  COURSES:      { key:2, url:`${dataURL}/courses`     , name:'courses'     },
-  SECTIONS:     { key:3, url:`${dataURL}/sections`    , name:'sections'    },
-  INSTRUCTORS:  { key:4, url:`${dataURL}/instructors` , name:'instructors' }
+  SCHEDULES:     { key:101, url:`${dataURL}/schedules`    , name:'schedules'    },
+  SCHEDULE:      { key:102, url:`${dataURL}/schedule`    , name:'schedule'    },
 };
 
 export const initialState = {
   //Array of ObjectId's that are being fetched
-  fetchingIDs : [],
+  userID : null ,
   //Data cached in state from the db
-  data: { subjects    : {},
-          sections    : {},
-          courses     : {},
-          instructors : {}
+  data: { courseLoads   : {},
+          schedules    : {},
         }
 }
 
@@ -58,28 +56,6 @@ const receiveData = (request, data) => (
   }
 );
 
-const waitForDataToLoad = (request, getState) => new Promise(
-  (resolve, reject) => {
-
-  let dataState = getState().dataCacheReducer;
-
-  let finished = true;
-  request.dataIDs.forEach(dataID => {
-    if( finished && dataState.fetchingIDs.some( (id) => id===dataID )){
-      finished = false;
-      setTimeout(() =>
-        waitForDataToLoad(request, getState)
-        .then( () => resolve() )
-        , 200);
-    }
-  });
-
-
-  if(finished){
-    resolve();
-  }
-});
-
 const isDataCached = (request, dataState) => {
   let needToFetch = [];
 
@@ -87,68 +63,42 @@ const isDataCached = (request, dataState) => {
     if( !(dataState.data[request.type.name][dataID]) &&
         !(dataState.fetchingIDs.some( (id) => id===dataID) )){
       needToFetch.push(dataID);
-    }
+    };
   });
   return needToFetch;
 };
 
-const fetchData = (request, dataIDs)  => new Promise(
-  (resolve, reject) => {
+const fetchData = (request, dataIDs) => (dispatch) => {
+  dispatch( requestData(request) );
 
   let promises = [];
-  let allData = [];
-
   dataIDs.forEach(dataID =>
-    promises.push(dataAPI.get(
-    { type    : request.type,
-      dataID : dataID
-    })
-    .then((data) => allData.push(data))
-    .catch(err => console.log(err) ))
-  );
+      promises.push(dataAPI.get(
+      { type    : request.type,
+        dataID : dataID
+      })
+      .then(data => {
+        dispatch(receiveData(request, data))
+      })
+      .catch(err => console.log(err) ))
+    )
 
-  Promise.all(promises)
-  .then(()=>resolve(allData))
-  .catch((err) => console.error(err));
-});
+  return (
+    Promise.all(promises)
+  );
+};
 
 
 export const dataCache = {
   // request should have a type of data to retrieve
   // an originator for the request, must be in the ORIGINATORS_ENUM
   // and an id or array of ids of the data we are requesting
-  fetchIfNeeded: (request) => (dispatch, getState) => new Promise(
-    (resolve, reject) => {
-
+  fetchIfNeeded: (request) => (dispatch, getState) => {
     let dataState = getState().dataCacheReducer;
     let dataToFetch = isDataCached(request, dataState);
-    if(dataToFetch.length){
-      //tell the ui we are fetching data
-      dispatch( requestData(request) );
-      //fetch the data
-      fetchData(request, dataToFetch)
-      .then( (data) => {
-        //tell the ui that we've fetched the data
-        dispatch(receiveData(request, data));
-        resolve(data);
-      })
-      .catch(err => reject(err))
-    }else{
-
-      waitForDataToLoad(request, getState)
-      .then( () => {
-        let data = [];
-        dataState = getState().dataCacheReducer;
-
-        request.dataIDs.forEach(dataID => {
-          data.push(dataState.data[request.type.name][dataID]);
-        });
-        resolve(data);
-      })
-      .catch((err) => console.error(err) );
-    };
-  }),
-
+    if(!dataToFetch.length) dispatch(receiveData(request))
+    else dispatch( fetchData(request, dataToFetch) );
+  }
 };
 
 const dataCacheReducer = (state = initialState, action) => {
@@ -167,10 +117,7 @@ const dataCacheReducer = (state = initialState, action) => {
       let collection = action.request.type.name;
       let newData = Object.assign({},state.data);
 
-      action.data.forEach( (data) => {
-        newData[collection][data._id] = data;
-      });
-
+      newData[collection][action.data._id] = action.data ;
       return Object.assign({}, state, {
         fetchingIDs: state.fetchingIDs.filter( (id) => (
           !(action.request.dataIDs).some( (id2) => id2===id )

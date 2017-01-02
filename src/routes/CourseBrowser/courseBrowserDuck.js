@@ -31,18 +31,16 @@ const courseBrowserReducer = (state = initialState, action) => {
       let newExpandedIDs = state.expandedIDs;
       if( !newExpandedIDs[path] ) newExpandedIDs[path] = [];
       let preLength = newExpandedIDs[path].length;
-      console.log(newExpandedIDs[path]);
+
       if( newExpandedIDs[path].length !== 0 ){
         newExpandedIDs[path] =
             newExpandedIDs[path].filter((id) => action.cardID !== id);
       }
-      console.log(newExpandedIDs[path])
 
       //if it wasn't in expanded cards, add it to expanded cards
       if( newExpandedIDs[path] && newExpandedIDs[path].length === preLength ){
         newExpandedIDs[path].push(action.cardID);
       };
-      console.log(newExpandedIDs[path])
 
       return Object.assign({},state,{
         expandedIDs: newExpandedIDs
