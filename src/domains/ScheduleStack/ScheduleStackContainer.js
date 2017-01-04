@@ -6,19 +6,24 @@ import { dataCache } from '../../dataHandling/dataCache'
 
 const mapStateToProps = (state, ownProps) => {
 
+  let stackMap = ownProps.stackMap;
+  let courseIDs = Object.keys(stackMap.data);
 
-  let courseIDs = ownProps.courseIDs;
+
+  // let courseIDs = ownProps.courseIDs;
   let courses = state.dataCacheReducer.data.courses;
 
   let ready;
-  console.log(courseIDs);
   dataCache.isDataLoaded(courses, courseIDs) ?
     ready=true: ready=false;
+
+
 
   return {
     ready: ready,
     courses: courses,
     courseIDs: courseIDs,
+    stackMap: stackMap,
   }
 }
 

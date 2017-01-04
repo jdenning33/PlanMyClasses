@@ -3,6 +3,8 @@ import { COLLECTIONS_ENUM } from '../../dataHandling/dataCache'
 import SectionContainer from '../Section/SectionContainer'
 import { dataCache } from '../../dataHandling/dataCache'
 import style from '../../style'
+import Slider from 'react-slick'
+import Carousel from '../../Components/Carousel'
 
 
 const Title = ( {course, cardClicked} ) => {
@@ -13,8 +15,9 @@ const Title = ( {course, cardClicked} ) => {
   )
 }
 
-const SectionCarousel = ( {sectionIDs} ) => (
+const SectionCarousel = ( {sectionIDs, setActive} ) => (
   <div style={style.carousel}>
+    <TestCarousel sectionIDs={sectionIDs} setActive={setActive} />
     {sectionIDs.map( (sectionID) => {
       return <SectionContainer  style={style.courseBox}
                                 key={sectionID}
@@ -23,7 +26,24 @@ const SectionCarousel = ( {sectionIDs} ) => (
   </div>
 );
 
-const SectionChunk = ( {sectionChunk, active} ) => {
+
+const TestCarousel = ( {sectionIDs, setActive} ) => {
+  let elements = sectionIDs.map( (sectionID) => {
+    let iStyle = style.carouselSection;
+    return (
+      <div key={sectionID} style={iStyle}>
+        <SectionContainer  sectionID={sectionID} />
+      </div>
+    )
+  });
+
+  return(
+    <Carousel elements={elements}
+              afterChange={setActive} />
+  )
+}
+
+const SectionChunk = ( {sectionChunk, active, setActive} ) => {
   let sectionIDs = Object.keys(sectionChunk.sectionIDs);
   sectionIDs = sectionIDs.sort( (id1, id2) => {
     return  (sectionChunk.sectionIDs[id1].secondaryTimes[0].start -
@@ -33,15 +53,14 @@ const SectionChunk = ( {sectionChunk, active} ) => {
   return(
     <div>
       {sectionChunk.primaryTime.start} - {sectionChunk.primaryTime.end}
-      {active ? <SectionCarousel sectionIDs={sectionIDs} /> : null}
+      {active ? <SectionCarousel sectionIDs={sectionIDs}
+                                  setActive={setActive}/> : null}
 
     </div>
   )
 }
 
-const ExpandedCourseComponent = ( {course, reducedCourseJSON, active} ) => {
-
-  console.log(reducedCourseJSON);
+const ExpandedCourseComponent = ( {course, reducedCourseJSON, active, setActive} ) => {
 
   let sortedChunks = reducedCourseJSON.sort( (chunk1, chunk2) => (
     chunk1.primaryTime.start - chunk2.primaryTime.start
@@ -54,7 +73,8 @@ const ExpandedCourseComponent = ( {course, reducedCourseJSON, active} ) => {
       {sortedChunks.map( (sectionChunk) => {
           return <SectionChunk  key={sectionChunk.primaryTime.start}
                                 sectionChunk={sectionChunk}
-                                active={true} />
+                                active={true}
+                                setActive={setActive} />
       })}
     </div>
   )
@@ -63,7 +83,7 @@ const ExpandedCourseComponent = ( {course, reducedCourseJSON, active} ) => {
 
 class ReducedCourseComponent extends React.Component{
   constructor({course, courseID, expanded, fetchingIDs,
-                              cardClicked, getData}){
+                              cardClicked, getData, setActive}){
     super();
   }
 
@@ -78,7 +98,8 @@ class ReducedCourseComponent extends React.Component{
     if(!my.ready) return (<div>loading</div>);
     return (<ExpandedCourseComponent  course={my.course}
                                       reducedCourseJSON={my.reducedCourseJSON}
-                                      active={my.active} />);
+                                      active={my.active}
+                                      setActive={my.setActive}/>);
 
   }
 }

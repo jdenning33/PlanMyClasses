@@ -6,7 +6,6 @@ import { getReducedCourseJSON } from './ReducedCourseJSON'
 
 const mapStateToProps = (state, ownProps) => {
 
-  console.log('say what now');
   let courseID = ownProps.courseID;
   let course = state.dataCacheReducer.data.courses[courseID];
   let sections = state.dataCacheReducer.data.sections;
@@ -39,6 +38,11 @@ const mapDispatchToProps = (dispatch) => {
                                           dataIDs: dataIDs }
                                         ));
       return promise;
+    },
+
+    setActive: (e) => {
+      console.log(e);
+      return;
     },
   }
 }

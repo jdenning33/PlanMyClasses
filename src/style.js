@@ -5,7 +5,7 @@ const style = {
     maxWidth:'300px',
     margin:'0 auto',
     fontFamily:'Helvetica, sans-serif',
-    backgroundColor:'#000000'
+    backgroundColor:'#aaaaaa'
   },
   scheduleBuilder: {
     minWidth:'200px',
@@ -24,14 +24,48 @@ const style = {
     fontFamily:'Helvetica, sans-serif',
     backgroundColor:'#bbbbbb'
   },
+  carouselSection: {
+    display: 'inline-block',
+    width:'auto',
+    verticalAlign:'top',
+    // maxWidth:'400px',
+    // margin:'2px',
+    marginBottom:'10px',
+    padding:'5px',
+    fontFamily:'Helvetica, sans-serif',
+    backgroundColor:'#444444',
+    textAlign:'center',
+  },
   title: {
     margin:'0 auto',
     textAlign:'center',
     fontWeight: 'bold',
   },
-
-
-
+  carouselItem: {
+    display: 'inline-block',
+    width:'auto',
+    verticalAlign:'top',
+    // maxWidth:'400px',
+    // margin:'2px',
+    marginBottom:'10px',
+    padding:'5px',
+    paddingBottom: '0px',
+    fontFamily:'Helvetica, sans-serif',
+    backgroundColor:'#444444',
+    textAlign:'center',
+  },
+  activeCarouselItem: {
+    display: 'inline-block',
+    width:'auto',
+    verticalAlign:'top',
+    // maxWidth:'400px',
+    // margin:'2px',
+    marginBottom:'10px',
+    padding:'5px',
+    fontFamily:'Helvetica, sans-serif',
+    backgroundColor:'#aaaaaa',
+    textAlign:'center',
+  },
 
 
 

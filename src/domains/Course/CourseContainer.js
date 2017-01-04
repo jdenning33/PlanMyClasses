@@ -20,8 +20,8 @@ const mapStateToProps = (state, ownProps) => {
 
   //check if the card is already in the desired course load
   let isDesired = false;
-  let desiredIDs = state.scheduleBuilderReducer.desiredIDs;
-  isDesired = desiredIDs[ownProps.courseID] ? true:false;
+  let stackMap = state.scheduleBuilderReducer.desiredMap;
+  isDesired = stackMap.data[ownProps.courseID] ? true:false;
 
   return {
     course: course,
@@ -44,7 +44,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch( courseBrowser.cardClicked(dataID) );
     },
     toggleDesired: (dataID, collection) => {
-      dispatch( scheduleBuilder.toggleDesired(dataID, collection) );
+      dispatch( scheduleBuilder.toggleDesiredCourse(dataID, collection) );
     }
   }
 }

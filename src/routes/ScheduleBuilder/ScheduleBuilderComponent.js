@@ -5,7 +5,7 @@ import CoursesContainer from '../../domains/Course/CoursesContainer'
 import ScheduleStackContainer from '../../domains/ScheduleStack/ScheduleStackContainer'
 import style from '../../style'
 
-const ScheduleBuilderComponent = ( {courseIDs} ) => (
+const ScheduleBuilderComponent = ( {courseIDs, stackMap} ) => (
   <div style={style.scheduleBuilder}>
     <div style={style.scheduleBuilderSub}>
       <div style={style.title}>Schedule Preferences</div>
@@ -17,9 +17,11 @@ const ScheduleBuilderComponent = ( {courseIDs} ) => (
       <CoursesContainer courseIDs={courseIDs} />
     </div>
 
+    {console.log(stackMap)}
     <div style={style.scheduleBuilderSub}>
       <div style={style.title}>Schedule Preferences</div>
-      <ScheduleStackContainer courseIDs={courseIDs} />
+      <ScheduleStackContainer stackMap={stackMap}
+                              courseIDs={courseIDs} />
     </div>
 
   </div>
