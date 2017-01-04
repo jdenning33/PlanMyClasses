@@ -1,9 +1,10 @@
 //  CONSTANTS
 const initialState = {
   // desiredIDs: { },
-  desiredIDs: { '586477cdc5d24f47c82d20fc': {type:'courses'},
-                '586477cec5d24f47c82d2104': {type:'courses'},
-                '586477cfc5d24f47c82d210d': {type:'courses'} },
+  desiredIDs: [ '586477d6c5d24f47c82d219b',
+                '586477cec5d24f47c82d2104',
+                // '586477cfc5d24f47c82d210d': {type:'courses'}
+              ],
   expandedIDs: []
 }
 

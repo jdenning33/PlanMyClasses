@@ -2,8 +2,11 @@ import { connect } from 'react-redux'
 import ScheduleBuilderComponent from './ScheduleBuilderComponent'
 
 const mapStateToProps = (state) => {
-  return {
 
+  let courseIDs = state.scheduleBuilderReducer.desiredIDs;
+
+  return {
+    courseIDs: courseIDs,
   }
 }
 

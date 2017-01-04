@@ -85,7 +85,7 @@ class CourseComponent extends React.Component{
     let my = this.props;
     if(!my.course){
       if(!my.fetchingIDs.length || !my.fetchingIDs.some(id=>id===my.courseID)) {
-        my.getData(my.courseID, COLLECTIONS_ENUM.COURSES)
+        if(my.courseID) my.getData(my.courseID, COLLECTIONS_ENUM.COURSES)
       };
     }
   }

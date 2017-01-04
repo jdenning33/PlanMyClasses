@@ -1,14 +1,41 @@
 //style.js
 const style = {
-  commentBox: {
-    width:'80vw',
+  carousel: {
+    minWidth:'150px',
+    maxWidth:'300px',
     margin:'0 auto',
-    fontFamily:'Helvetica, sans-serif'
+    fontFamily:'Helvetica, sans-serif',
+    backgroundColor:'#000000'
+  },
+  scheduleBuilder: {
+    minWidth:'200px',
+    maxWidth:'400px',
+    margin:'0 auto',
+    padding: '15px',
+    fontFamily:'Helvetica, sans-serif',
+    backgroundColor:'#dddddd'
+  },
+  scheduleBuilderSub: {
+    minWidth:'200px',
+    maxWidth:'400px',
+    margin:'0 auto',
+    marginBottom:'10px',
+    padding:'15px',
+    fontFamily:'Helvetica, sans-serif',
+    backgroundColor:'#bbbbbb'
   },
   title: {
+    margin:'0 auto',
     textAlign:'center',
-    textTransform:'uppercase'
+    fontWeight: 'bold',
   },
+
+
+
+
+
+
+  //not mine
   commentList: {
     border:'1px solid #f1f1f1',
     padding:'0 12px',

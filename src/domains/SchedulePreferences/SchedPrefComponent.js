@@ -8,8 +8,6 @@ const SchedPrefComponent = ( {activeLinks,  setCampusClick,
   return (
     <div>
       <div>
-        <h3> Schedule Preferences </h3>
-
         <div>
           <b>Campus: </b>
           <PrefLinksComponent ENUM={CAMPUS_ENUM}

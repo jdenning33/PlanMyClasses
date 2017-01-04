@@ -6,8 +6,6 @@ const mapStateToProps = (state, ownProps) => {
 
   let path = window.location.pathname + '/schedules';
 
-  console.log('here I am');
-
   //decide if the card should be expanded based on the expandedIDs
   let expanded = false;
   let expandedIDs;
@@ -16,8 +14,14 @@ const mapStateToProps = (state, ownProps) => {
     expanded = expandedIDs.some((id) => ownProps.scheduleID===id);
   }
 
+  let courses = state.dataCacheReducer.data.courses;
+  let sections = state.dataCacheReducer.data.sections;
+
   return {
-    schedule: ownProps.schedule,
+    ready: (ownProps.scheduleJSON)?true:false,
+    courses: courses,
+    sections: sections,
+    scheduleJSON: ownProps.scheduleJSON,
     expanded: expanded,
   }
 }

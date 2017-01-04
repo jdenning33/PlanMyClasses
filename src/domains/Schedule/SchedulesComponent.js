@@ -1,11 +1,10 @@
 import React from 'react';
 import ScheduleContainer from './ScheduleContainer';
-import SectionsContainer from '../Section/SectionsContainer'
 import { COLLECTIONS_ENUM } from '../../dataHandling/dataCache'
 
 
 class SchedulesComponent extends React.Component{
-  constructor( {ready, schedules, courseIDs, getData} ){
+  constructor( {ready, scheduleJSON, courseIDs, getData} ){
     super();
   }
 
@@ -33,9 +32,7 @@ class SchedulesComponent extends React.Component{
       return(
         <div>
           Schedules
-          {my.schedules.map( (schedule) => {
-            return <ScheduleContainer schedule={schedule} />
-          } )}
+          <ScheduleContainer scheduleJSON={my.scheduleJSON} />
         </div>
       )
     }else{

@@ -36,7 +36,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getData: (dataID, collection) => {
       dispatch( dataCache.fetchIfNeeded( {type: collection,
-                                          originator: 'coursesContainer',
+                                          originator: 'courseContainer',
                                           dataIDs: [dataID] }
                                         ) );
     },

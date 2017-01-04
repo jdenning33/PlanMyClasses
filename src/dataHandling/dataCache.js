@@ -84,11 +84,13 @@ const isDataCached = (request, dataState) => {
   let needToFetch = [];
 
   request.dataIDs.forEach(dataID => {
+    if(!dataID) return;
     if( !(dataState.data[request.type.name][dataID]) &&
         !(dataState.fetchingIDs.some( (id) => id===dataID) )){
       needToFetch.push(dataID);
     }
   });
+
   return needToFetch;
 };
 
@@ -122,12 +124,14 @@ export const dataCache = {
 
     let dataState = getState().dataCacheReducer;
     let dataToFetch = isDataCached(request, dataState);
+
     if(dataToFetch.length){
       //tell the ui we are fetching data
       dispatch( requestData(request) );
       //fetch the data
       fetchData(request, dataToFetch)
       .then( (data) => {
+
         //tell the ui that we've fetched the data
         dispatch(receiveData(request, data));
         resolve(data);
@@ -148,6 +152,43 @@ export const dataCache = {
       .catch((err) => console.error(err) );
     };
   }),
+
+  isDataLoaded: (data, dataIDs) => {
+    //no data to load
+    if( !dataIDs ) return false;
+
+    //all data is loaded
+    if( !dataIDs.every(dataID => data[dataID]) ) return false;
+    //all data must be loaded
+    return true;
+  },
+
+  areCoursesAndSectionsLoaded: (sections, courses, courseIDs) => {
+    //we haven't even loaded the courses yet
+    if( !dataCache.isDataLoaded(courses, courseIDs) ) return false;
+    //calculate the sectionIDs we need loaded
+    let sectionIDs = [];
+    courseIDs.forEach(courseID => {
+      sectionIDs = sectionIDs.concat(courses[courseID].sectionIDs)
+    });
+    //we haven't loaded the sections yet
+    if( !dataCache.isDataLoaded(sections, sectionIDs) ) return false;
+    //we must have loaded everything
+    return true;
+  },
+
+  deepLoadCourses: (courseIDs, getData) => {
+    getData(courseIDs, COLLECTIONS_ENUM.COURSES)
+    .then( (data) => {
+      let courses = data;
+      let sectionIDs = [];
+      courses.forEach(course => {
+        sectionIDs = sectionIDs.concat(course.sectionIDs)
+      });
+      getData(sectionIDs, COLLECTIONS_ENUM.SECTIONS);
+    })
+    .catch(err=> console.error(err));
+  }
 
 };
 
