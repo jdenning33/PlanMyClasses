@@ -29,7 +29,7 @@ const CourseCarousel = ({courseIDs, activeCourseID, courses,
   });
 
    return(
-    <div>
+    <div style={style.stackCarousel}>
       <Carousel elements={elements}
                 initialSlide={courseIDs.findIndex(id=>id===activeCourseID)}
                 afterChange={afterChange} />

@@ -1,5 +1,21 @@
 //style.js
 const style = {
+  header:{
+    position: 'absolute',
+    left:'0',
+    top:'0',
+    width:'100%'
+  },
+  appPage:{
+    // position: 'relative',
+    height: '100%',
+  },
+  bottomNav: {
+    position: 'absolute',
+    left: '0',
+    bottom: '0',
+    width: '100%'
+  },
   carousel: {
     minWidth:'150px',
     maxWidth:'300px',
@@ -8,12 +24,20 @@ const style = {
     backgroundColor:'#aaaaaa'
   },
   scheduleBuilder: {
+    flex: '1',
     minWidth:'200px',
     maxWidth:'400px',
     margin:'0 auto',
     padding: '15px',
-    fontFamily:'Helvetica, sans-serif',
+    fontFamily:'Roboto, sans-serif',
     backgroundColor:'#dddddd'
+  },
+  courseBrowserCard: {
+    paddingTop: '1px',
+    paddingRight: '1px',
+  },
+  sectionCardTime: {
+    float: 'right',
   },
   scheduleBuilderSub: {
     minWidth:'200px',
@@ -22,19 +46,7 @@ const style = {
     marginBottom:'10px',
     padding:'15px',
     fontFamily:'Helvetica, sans-serif',
-    backgroundColor:'#bbbbbb'
-  },
-  carouselSection: {
-    display: 'inline-block',
-    width:'auto',
-    verticalAlign:'top',
-    // maxWidth:'400px',
-    // margin:'2px',
-    marginBottom:'10px',
-    padding:'5px',
-    fontFamily:'Helvetica, sans-serif',
-    backgroundColor:'#444444',
-    textAlign:'center',
+    backgroundColor:'#bbbbff'
   },
   title: {
     margin:'0 auto',
@@ -45,9 +57,9 @@ const style = {
     display: 'inline-block',
     width:'auto',
     verticalAlign:'top',
-    // maxWidth:'400px',
+    // maxWidth:'200px',
     // margin:'2px',
-    marginBottom:'10px',
+    // marginBottom:'10px',
     padding:'5px',
     paddingBottom: '0px',
     fontFamily:'Helvetica, sans-serif',
@@ -60,11 +72,34 @@ const style = {
     verticalAlign:'top',
     // maxWidth:'400px',
     // margin:'2px',
-    marginBottom:'10px',
+    // marginBottom:'10px',
     padding:'5px',
-    fontFamily:'Helvetica, sans-serif',
+    paddingBottom:'10px',
+    fontFamily:'Roboto, sans-serif',
     backgroundColor:'#aaaaaa',
     textAlign:'center',
+  },
+  stackCarousel: {
+    width:'auto',
+    marginBottom:'0px',
+    padding:'0px',
+    fontFamily:'Helvetica, sans-serif',
+    backgroundColor:'#ffffff',
+  },
+  primaryTimeCarousel: {
+    width: '70%',
+    margin: '0 auto',
+    padding: '0px',
+    backgroundColor: '#ffffff',
+  },
+  courseStack: {
+    width:'100%',
+    marginBottom:'10px',
+    padding:'0px',
+    fontFamily:'Helvetica, sans-serif',
+    backgroundColor:'#00ffff',
+    borderStyle:'solid',
+    borderColor:'#ff0000',
   },
 
 

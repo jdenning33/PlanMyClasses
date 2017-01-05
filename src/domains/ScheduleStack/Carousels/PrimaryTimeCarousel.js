@@ -33,7 +33,7 @@ const PrimaryTimeCarousel = ({timesJSON, activeTime, afterChange}) => {
   });
 
   return(
-    <div>
+    <div style={style.primaryTimeCarousel}>
       <Carousel elements={elements}
                 initialSlide={
                     sortedTimes.findIndex(time =>

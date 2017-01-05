@@ -4,11 +4,14 @@ const initialState = {
   expandedIDs: {},
   subjectIDs : ['586477cbc5d24f47c82d20f9',
                 '586477cbc5d24f47c82d20fa',
-                '586477cbc5d24f47c82d20fb']
+                '586477cbc5d24f47c82d20fb'],
+  isHelpActive: false,
 }
 
 //  ACTIONS
 const CARD_CLICKED = 'courseBrowser/CARD_CLICKED';
+const OPEN_HELP = 'courseBrowser/OPEN_HELP';
+const CLOSE_HELP = 'courseBrowser/CLOSE_HELP';
 
 //  ACTION CREATORS
 export const courseBrowser = {
@@ -17,6 +20,16 @@ export const courseBrowser = {
     {
       type: CARD_CLICKED,
       cardID: cardID
+    }
+  ),
+  openHelp: () => (
+    {
+      type: OPEN_HELP
+    }
+  ),
+  closeHelp: () => (
+    {
+      type: CLOSE_HELP
     }
   )
 }
@@ -45,6 +58,16 @@ const courseBrowserReducer = (state = initialState, action) => {
       return Object.assign({},state,{
         expandedIDs: newExpandedIDs
       });
+
+    case OPEN_HELP:
+      return Object.assign({},state,{
+        isHelpActive: true
+      });
+    case CLOSE_HELP:
+      return Object.assign({},state,{
+        isHelpActive: false
+      });
+
     default:
       return state
   }

@@ -1,46 +1,74 @@
 import React from 'react';
 import ClickableContainer from '../../domains/Clickable/ClickableContainer';
 import { COLLECTIONS_ENUM } from '../../dataHandling/dataCache'
+import style from '../../style'
+
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
+import Toggle from 'material-ui/Toggle';
 
 
-const Title = ( {section, cardClicked} ) => {
-  let text = (
+const SectionCard = ( {section, sectionID, expanded,
+  cardClicked, toggleDesiredSection} ) => {
+
+  let instructors = section.instructors;
+  let primaryInstructor = instructors[0];
+  let name = null;
+  if(primaryInstructor){
+    let primaryInstructorName = primaryInstructor.name;
+    name = primaryInstructorName.first + ' ' + primaryInstructorName.last;
+  }
+
+  return(
+    <Card expanded={expanded} onExpandChange={() => cardClicked(sectionID)}>
+      <CardText style={style.sectionCardTime} expandable={false}>
+        <Times times={section.times} />
+        {/* <SectionsContainer sectionIDs={course.sectionIDs} /> */}
+      </CardText>
+
+      <CardHeader
+        title={section.number}
+        subtitle={name}
+        actAsExpander={true}
+        // showExpandableButton={true}
+      />
+
+      <CardText expandable={true}>
+        <div>crn: {section.crn}</div>
+        {/* <SectionsContainer sectionIDs={course.sectionIDs} /> */}
+      </CardText>
+
+      {/* <CardActions expandable={true}>
+        <FlatButton label="Discard"
+          onTouchTap={() => toggleDesiredSection(sectionID)} />
+        <FlatButton label="Add"
+          onTouchTap={() => toggleDesiredSection(sectionID)} />
+      </CardActions> */}
+
+    </Card>
+  )
+};
+
+const Times = ({times}) => {
+  let sTimes = times.sort( (a,b) => a.start - b.start );
+
+  return (
     <div>
-      <span> ~ ~ {section.number}: {section.title}</span>
+      {sTimes.map( (time, index) => {
+        return (
+          <div key={index}>
+            {time.days} {time.start} - {time.end}
+          </div>)
+      })}
     </div>
   )
-  return (<ClickableContainer node={text}
-                             active={false}
-                             clickAction={()=>cardClicked(section._id)} />)
-}
-
-const ExpandedSectionComponent = ( {section, cardClicked} ) => (
-  <div>
-    <Title  section={section}
-            cardClicked={cardClicked} />
-    <span>Display more info!!</span>
-  </div>
-);
+};
 
 const LoadingComponent = ( ) => (
   <div>
     loading
   </div>
 );
-
-
-const Component = ( {section, sectionID, expanded, fetchingIDs,
-                            cardClicked, getData} ) => {
-  if(!section) return ( <LoadingComponent /> )
-  else if(expanded){
-    return (<ExpandedSectionComponent section={section}
-                              cardClicked={cardClicked} />);
-  }
-  else{
-    return (<Title section={section} cardClicked={cardClicked} />);
-  }
-};
-
 
 class SectionComponent extends React.Component{
   constructor({section, sectionID, expanded, fetchingIDs,
@@ -58,7 +86,9 @@ class SectionComponent extends React.Component{
   }
 
   render(){
-    return Component(this.props)
+    let my = this.props;
+    if(!my.section) return <LoadingComponent />
+    return SectionCard(this.props)
   }
 }
 

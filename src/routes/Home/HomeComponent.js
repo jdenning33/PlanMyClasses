@@ -1,12 +1,15 @@
 import React, { PropTypes } from 'react'
 import LinkContainer from '../../domains/Link/LinkContainer'
 import { ROUTE_ENUM } from '../AppRouter'
+import RaisedButton from 'material-ui/RaisedButton';
+import BottomNavigationContainer from '../../domains/Navigation/BottomNavigationContainer'
+
 
 const HomeComponent = ( { todos, changeRoute, addSubject, eraseDB, populateDB } ) => (
   <div>
-    <div>
       <h1> Plan My Classes </h1>
       <h2> What would you like to do? </h2>
+      <RaisedButton label="Default" />
       <LinkContainer text='Build My Schedule'
                 clickAction={() => changeRoute(ROUTE_ENUM.SCHEDULE_BUILDER)} />
       <br />
@@ -22,7 +25,8 @@ const HomeComponent = ( { todos, changeRoute, addSubject, eraseDB, populateDB } 
       <br />
       <LinkContainer text='Test add subject'
                 clickAction={() => addSubject()} />
-  </div>
+      <br />
+      <BottomNavigationContainer />
   </div>
 )
 

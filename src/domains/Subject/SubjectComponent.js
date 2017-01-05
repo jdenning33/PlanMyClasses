@@ -2,26 +2,27 @@ import React from 'react';
 import ClickableContainer from '../../domains/Clickable/ClickableContainer';
 import { COLLECTIONS_ENUM } from '../../dataHandling/dataCache'
 import CoursesContainer from '../Course/CoursesContainer'
+import style from '../../style'
+
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
+import Toggle from 'material-ui/Toggle';
 
 
-const Title = ( {subject, cardClicked} ) => {
-  let text = (
-    <div>
-      <span><b>{subject.code}:</b> {subject.name}</span>
-    </div>
-  )
-  return (<ClickableContainer node={text}
-                             active={false}
-                             clickAction={()=>cardClicked(subject._id)} />)
-}
+const SubjectCard = ( {subject, subjectID, expanded, cardClicked} ) => (
+  <Card style={style.courseBrowserCard}
+        expanded={expanded} onExpandChange={() => cardClicked(subjectID)}>
+    <CardHeader
+      title={subject.name}
+      subtitle={subject.code}
+      actAsExpander={true}
+      // showExpandableButton={true}
+    />
+  <CardText style={style.courseBrowserCard} expandable={true}>
+      <CoursesContainer courseIDs={subject.courseIDs} />
+    </CardText>
+  </Card>
 
-const ExpandedSubjectComponent = ( {subject, cardClicked} ) => (
-  <div>
-    <Title  subject={subject}
-            cardClicked={cardClicked} />
-    <span/>
-    <CoursesContainer courseIDs={subject.courseIDs} />
-  </div>
 );
 
 const LoadingComponent = ( ) => (
@@ -29,20 +30,6 @@ const LoadingComponent = ( ) => (
     loading
   </div>
 );
-
-
-const Component = ( {subject, subjectID, expanded, fetchingIDs,
-                            cardClicked, getData} ) => {
-  if(!subject) return ( <LoadingComponent /> )
-  else if(expanded){
-    return (<ExpandedSubjectComponent subject={subject}
-                              cardClicked={cardClicked} />);
-  }
-  else{
-    return (<Title subject={subject} cardClicked={cardClicked} />);
-  }
-};
-
 
 class SubjectComponent extends React.Component{
   constructor({subject, subjectID, expanded, fetchingIDs,
@@ -60,7 +47,8 @@ class SubjectComponent extends React.Component{
   }
 
   render(){
-    return Component(this.props)
+    if(!this.props.subject) return ( <LoadingComponent /> )
+    return SubjectCard(this.props);
   }
 }
 

@@ -79,7 +79,8 @@ class ScheduleStackComponent extends React.Component{
       }
 
       return(
-        <div  key={activeCourseID}>
+        <div  key={activeCourseID}
+              style={style.courseStack}>
 
           <CourseCarousel   courseIDs={relationship}
                             activeCourseID={activeCourseID}

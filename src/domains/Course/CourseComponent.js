@@ -2,44 +2,33 @@ import React from 'react';
 import ClickableContainer from '../Clickable/ClickableContainer';
 import { COLLECTIONS_ENUM } from '../../dataHandling/dataCache'
 import SectionsContainer from '../Section/SectionsContainer'
+import style from '../../style'
+
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
+import Toggle from 'material-ui/Toggle';
 
 
-const Title = ( {course, cardClicked} ) => {
-  let text = (
-    <div>
-      <span> ~ {course.number}: {course.title}</span>
-    </div>
-  )
-  return (<ClickableContainer node={text}
-                             active={false}
-                             clickAction={()=>cardClicked(course._id)} />)
-}
+const CourseCard = ( {course, courseID, expanded,
+  cardClicked, toggleDesiredCourse} ) => (
 
-const ToggleDesiredButton = ( {course, isDesired, toggleDesiredCourse} ) => {
-  let node = (
-    <div><b>{
-        isDesired?
-        'Remove from Course Load' :
-        'Add to Course Load'
-    }</b></div>
-  )
-  return (<ClickableContainer
-    node={node}
-    active={false}
-    clickAction={()=>toggleDesiredCourse(course, COLLECTIONS_ENUM.COURSES)} /> )
-}
+  <Card expanded={expanded} onExpandChange={() => cardClicked(courseID)}>
+    <CardHeader
+      title={course.title}
+      subtitle={course.number}
+      actAsExpander={true}
+      // showExpandableButton={true}
+    />
+    <CardText style={style.courseBrowserCard} expandable={true}>
+      {course.description}
+      <SectionsContainer sectionIDs={course.sectionIDs} />
+    </CardText>
+    <CardActions expandable={true}>
+      <FlatButton label="Add to Schedule"
+        onTouchTap={() => toggleDesiredCourse(course)} />
+    </CardActions>
+  </Card>
 
-const ExpandedCourseComponent = ( {course, cardClicked,
-                                    isDesired, toggleDesiredCourse} ) => (
-  <div>
-    <Title  course={course}
-            cardClicked={cardClicked} />
-    <ToggleDesiredButton course={course}
-            isDesired={isDesired}
-            toggleDesiredCourse={toggleDesiredCourse} />
-    <span />
-    <SectionsContainer sectionIDs={course.sectionIDs} />
-  </div>
 );
 
 const LoadingComponent = ( ) => (
@@ -54,30 +43,9 @@ const FailedComponent = ( ) => (
 );
 
 
-const Component = ( {course, courseID, expanded, isDesired, fetchingIDs,
-                            cardClicked, toggleDesiredCourse, getData} ) => {
-  if(!course){
-    if(fetchingIDs.length && fetchingIDs.some(id=>id===courseID)) {
-      return ( <LoadingComponent /> );
-    }else{
-      return ( <FailedComponent /> );
-    }
-  }
-  else if(expanded){
-    return (<ExpandedCourseComponent course={course}
-                              cardClicked={cardClicked}
-                              isDesired={isDesired}
-                              toggleDesiredCourse={toggleDesiredCourse} />);
-  }
-  else{
-    return (<Title course={course} cardClicked={cardClicked} />);
-  }
-};
-
-
 class CourseComponent extends React.Component{
   constructor({course, courseID, expanded, fetchingIDs,
-                              cardClicked, getData}){
+                    cardClicked, toggleDesiredCourse, getData}){
     super();
   }
 
@@ -91,7 +59,9 @@ class CourseComponent extends React.Component{
   }
 
   render(){
-    return Component(this.props)
+    let my = this.props;
+    if(!my.course) return <LoadingComponent />
+    return CourseCard(this.props);
   }
 }
 

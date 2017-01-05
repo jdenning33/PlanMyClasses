@@ -39,7 +39,7 @@ const SectionCarousel = ({sectionJSONs, activeSectionID, sections,
   });
 
   return(
-    <div>
+    <div style={style.stackCarousel}>
       <Carousel elements={elements}
                 initialSlide={
                   sectionIDs.findIndex( (id) =>
