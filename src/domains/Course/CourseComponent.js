@@ -15,7 +15,7 @@ const Title = ( {course, cardClicked} ) => {
                              clickAction={()=>cardClicked(course._id)} />)
 }
 
-const ToggleDesiredButton = ( {courseID, isDesired, toggleDesired} ) => {
+const ToggleDesiredButton = ( {course, isDesired, toggleDesiredCourse} ) => {
   let node = (
     <div><b>{
         isDesired?
@@ -26,17 +26,17 @@ const ToggleDesiredButton = ( {courseID, isDesired, toggleDesired} ) => {
   return (<ClickableContainer
     node={node}
     active={false}
-    clickAction={()=>toggleDesired(courseID, COLLECTIONS_ENUM.COURSES)} /> )
+    clickAction={()=>toggleDesiredCourse(course, COLLECTIONS_ENUM.COURSES)} /> )
 }
 
 const ExpandedCourseComponent = ( {course, cardClicked,
-                                    isDesired, toggleDesired} ) => (
+                                    isDesired, toggleDesiredCourse} ) => (
   <div>
     <Title  course={course}
             cardClicked={cardClicked} />
-    <ToggleDesiredButton courseID={course._id}
+    <ToggleDesiredButton course={course}
             isDesired={isDesired}
-            toggleDesired={toggleDesired} />
+            toggleDesiredCourse={toggleDesiredCourse} />
     <span />
     <SectionsContainer sectionIDs={course.sectionIDs} />
   </div>
@@ -55,7 +55,7 @@ const FailedComponent = ( ) => (
 
 
 const Component = ( {course, courseID, expanded, isDesired, fetchingIDs,
-                            cardClicked, toggleDesired, getData} ) => {
+                            cardClicked, toggleDesiredCourse, getData} ) => {
   if(!course){
     if(fetchingIDs.length && fetchingIDs.some(id=>id===courseID)) {
       return ( <LoadingComponent /> );
@@ -67,7 +67,7 @@ const Component = ( {course, courseID, expanded, isDesired, fetchingIDs,
     return (<ExpandedCourseComponent course={course}
                               cardClicked={cardClicked}
                               isDesired={isDesired}
-                              toggleDesired={toggleDesired} />);
+                              toggleDesiredCourse={toggleDesiredCourse} />);
   }
   else{
     return (<Title course={course} cardClicked={cardClicked} />);

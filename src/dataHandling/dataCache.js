@@ -158,7 +158,10 @@ export const dataCache = {
     if( !dataIDs ) return false;
 
     //all data is loaded
-    if( !dataIDs.every(dataID => data[dataID]) ) return false;
+    if( !dataIDs.every(dataID => {
+      return data[dataID]
+    }) ) return false;
+
     //all data must be loaded
     return true;
   },
@@ -174,6 +177,7 @@ export const dataCache = {
     //we haven't loaded the sections yet
     if( !dataCache.isDataLoaded(sections, sectionIDs) ) return false;
     //we must have loaded everything
+
     return true;
   },
 

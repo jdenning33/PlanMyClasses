@@ -1,10 +1,4 @@
 //  CONSTANTS
-const CAROUSEL_TYPE = {
-  COURSE : 10213,
-  PRIMARY_TIME : 10214,
-  SECONDARY_TIME : 10215
-}
-
 const initialState = {
   // boolean/id if id is set, our desired courses will display an add to
   // button so we can set up class or's
@@ -27,27 +21,18 @@ const initialState = {
                          '586477cfc5d24f47c82d210d',
                      ],
 
-      data:          {  '586477d6c5d24f47c82d219b':
-                            { activeSection:  { id:             null,
-                                                primaryTime:    null,
-                                                secondaryTime:  null,
-                                              },
+      data:          {  '586477d6c5d24f47c82d219b':   //course
+                            { activeSectionID:  null,
                               removedSections: [],
                             },
 
                         '586477cec5d24f47c82d2104':
-                            { activeSection:  { id:             null,
-                                                primaryTime:    null,
-                                                secondaryTime:  null,
-                                              },
+                            { activeSectionID:  null,
                               removedSections: [],
                             },
 
                         '586477cfc5d24f47c82d210d':
-                            { activeSection:  { id:             null,
-                                                primaryTime:    null,
-                                                secondaryTime:  null,
-                                              },
+                            { activeSectionID:  null,
                               removedSections: [],
                             },
                     }
@@ -58,43 +43,40 @@ const initialState = {
 }
 
 //  ACTIONS
-const TOGGLE_DESIRED          = 'scheduleBuilder/TOGGLE_DESIRED'
 const TOGGLE_DESIRED_COURSE   = 'scheduleBuilder/TOGGLE_DESIRED_COURSE'
 const TOGGLE_DESIRED_SECTION  = 'scheduleBuilder/TOGGLE_DESIRED_SECTION'
-const TOGGLE_ACTIVE_COURSE    = 'scheduleBuilder/TOGGLE_ACTIVE_COURSE'
-const TOGGLE_ACTIVE_PRIMARY   = 'scheduleBuilder/TOGGLE_ACTIVE_PRIMARY'
-const TOGGLE_ACTIVE_SECONDARY = 'scheduleBuilder/TOGGLE_ACTIVE_SECONDARY'
+const SWITCH_ACTIVE_COURSE    = 'scheduleBuilder/SWITCH_ACTIVE_COURSE'
+const SWITCH_ACTIVE_SECTION   = 'scheduleBuilder/SWITCH_ACTIVE_SECTION'
 const CARD_CLICKED            = 'scheduleBuilder/CARD_CLICKED'
 
 
 //  ACTION CREATORS
 export const scheduleBuilder = {
-  toggleDesired: (dataID, collection) => {
-    return{
-      type: TOGGLE_DESIRED,
-      dataID: dataID,
-      collection: collection
-    }
-  },
-
-  toggleDesiredCourse: (courseID) => {
+  toggleDesiredCourse: (course) => {
     return{
       type: TOGGLE_DESIRED_COURSE,
-      courseID: courseID,
+      course: course,
     }
   },
-  toggleDesiredSection: (sectionID) => {
+  toggleDesiredSection: (section) => {
     return{
       type: TOGGLE_DESIRED_SECTION,
-      sectionID: sectionID,
+      section: section,
     }
   },
 
-  toggleActiveCourse: (courseID, relationship) => {
+  switchActiveCourse: (removeID, addID) => {
     return{
-      type: TOGGLE_ACTIVE_COURSE,
-      courseID: courseID,
-      relationship: relationship
+      type: SWITCH_ACTIVE_COURSE,
+      addID,
+      removeID
+    }
+  },
+  switchActiveSection: (courseID, sectionID) => {
+    return{
+      type: SWITCH_ACTIVE_SECTION,
+      courseID,
+      sectionID
     }
   },
 
@@ -112,41 +94,41 @@ const scheduleBuilderReducer = (state = initialState, action) => {
 
     case TOGGLE_DESIRED_COURSE:
       let desiredMap = Object.assign({}, state.desiredMap);
-      // The course is already in our desired map, remove it
-      if( desiredMap.data[action.courseID] ){
+      let courseID = action.course._id;
+
+      if( desiredMap.data[courseID] ){
+        // The course is already in our desired map, remove it
         // Remove it from any relationships
         desiredMap.relationships =
         desiredMap.relationships
         .map((relationship) => {
-          return (relationship.filter( (id) => id!==action.courseID))
+          return (relationship.filter( (id) => id!==courseID))
         })
+        // Remove any null relationships
         .filter( (relationship) => {
-          return (relationship.length != 0)
+          return (relationship.length !== 0)
         });
 
         // Remove it from active courses
         desiredMap.activeCourseIDs =
-        desiredMap.activeCourseIDs.filter( (id) => id!==action.courseID)
+        desiredMap.activeCourseIDs.filter( (id) => id!==courseID)
 
         // Remove our reference to it
-        delete desiredMap.data[action.courseID];
+        delete desiredMap.data[courseID];
       } else {
         //We don't have the course in our desired map, add it
 
-        //relationships must be added later
-        desiredMap.relationships.push( [ action.courseID ] );
-        console.log(desiredMap.relationships)
+        //relationships will be added later
+        desiredMap.relationships.push( [ courseID ] );
 
-        // Add it to our active courses, courses without relationships must be active
+        // Add it to our active courses, courses without relationships
+        // must be active
         desiredMap.activeCourseIDs =
-        desiredMap.activeCourseIDs.concat(action.courseID);
+        desiredMap.activeCourseIDs.concat(courseID);
 
         // Add a reference to it
-        desiredMap.data[action.courseID] =
-        { activeSection:  { id:             null,
-                            primaryTime:    null,
-                            secondaryTime:  null,
-                          },
+        desiredMap.data[courseID] =
+        { activeSectionID: action.course.sectionIDs[0],
           removedSections: [],
         };
       }
@@ -154,19 +136,29 @@ const scheduleBuilderReducer = (state = initialState, action) => {
         desiredMap:desiredMap
       });
 
-    case TOGGLE_ACTIVE_COURSE:
-      // let desiredMap = Object.assign({}, state.desiredMap);
+    case SWITCH_ACTIVE_COURSE:
+      desiredMap = Object.assign({}, state.desiredMap);
+      // remove the old active course
+      desiredMap.activeCourseIDs = desiredMap.activeCourseIDs
+      .filter( (id) => id !== action.removeID);
 
-    case TOGGLE_DESIRED:
-      let newDesired = Object.assign({}, state.desiredIDs);
-      if(!state.desiredIDs[action.dataID]){
-        newDesired[action.dataID] = {type:action.collection.name};
-      }else{
-        delete newDesired[action.dataID];
-      }
-      return Object.assign({},state,{
-        desiredIDs: newDesired
+      // add the new active course
+      desiredMap.activeCourseIDs.push(action.addID);
+      return Object.assign({}, state, {
+        desiredMap:desiredMap
       });
+
+    case SWITCH_ACTIVE_SECTION:
+      desiredMap = Object.assign({}, state.desiredMap);
+      // set the active course
+      desiredMap.data[action.courseID].activeSectionID =
+        action.sectionID;
+
+      return Object.assign({}, state, {
+        desiredMap:desiredMap
+      });
+
+
 
     case CARD_CLICKED:
       //remove the subject from expanded cards
@@ -185,7 +177,7 @@ const scheduleBuilderReducer = (state = initialState, action) => {
       });
 
     default:
-      return state
+      return state;
   }
 }
 

@@ -17,7 +17,6 @@ const ScheduleBuilderComponent = ( {courseIDs, stackMap} ) => (
       <CoursesContainer courseIDs={courseIDs} />
     </div>
 
-    {console.log(stackMap)}
     <div style={style.scheduleBuilderSub}>
       <div style={style.title}>Schedule Preferences</div>
       <ScheduleStackContainer stackMap={stackMap}

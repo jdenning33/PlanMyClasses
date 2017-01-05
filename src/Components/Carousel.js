@@ -1,10 +1,10 @@
 import React from 'react';
-import style from '../style'
 import Slider from 'react-slick'
 
 const Carousel = (
   { elements,
-    afterChange} ) =>
+    initialSlide = 0,
+    afterChange } ) =>
 {
   var settings = {
     dots: false,
@@ -15,16 +15,15 @@ const Carousel = (
     accessiblity: true,
     centerMode:true,
     focusOnSelect: true,
+    initialSlide: initialSlide,
+    draggable: true,
+    swipeToSlide: true,
     afterChange: (e) => afterChange(e),
   };
-  let i = 0;
+
   return (
     <Slider {...settings}>
-      {elements.map( (element) => {
-        return (
-          element
-        )
-      })}
+      {elements}
     </Slider>
   );
 }

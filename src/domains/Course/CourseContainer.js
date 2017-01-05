@@ -43,8 +43,8 @@ const mapDispatchToProps = (dispatch) => {
     cardClicked: (dataID) => {
       dispatch( courseBrowser.cardClicked(dataID) );
     },
-    toggleDesired: (dataID, collection) => {
-      dispatch( scheduleBuilder.toggleDesiredCourse(dataID, collection) );
+    toggleDesiredCourse: (course) => {
+      dispatch( scheduleBuilder.toggleDesiredCourse(course) );
     }
   }
 }
