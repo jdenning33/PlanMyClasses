@@ -6,7 +6,8 @@ import Paper from 'material-ui/Paper';
 
 const TimePaper = ({primaryTime, active}) => {
   let z = (active)?1:2;
-  let iStyle = (active)?style.activeCarouselPaper : style.carouselPaper;
+  let iStyle = (active)?style.timeActiveCarouselPaper :
+                        style.timeCarouselPaper;
   return (
     <Paper style={iStyle} zDepth={z}>
       <div>
@@ -19,6 +20,7 @@ const TimePaper = ({primaryTime, active}) => {
 
 const PrimaryTimeCarousel = ({timesJSON, activeTime, afterChange}) => {
   let sortedTimes = timesJSON.sort( (a,b) => {
+    if(!a.primaryTime || !b.primaryTime) return 0;
     return (a.primaryTime.start - b.primaryTime.start)
   })
 

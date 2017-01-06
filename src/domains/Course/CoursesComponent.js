@@ -3,7 +3,6 @@ import CourseContainer from './CourseContainer';
 import FloatingButton from 'material-ui/FloatingActionButton';
 // import OrIcon from 'material-ui/svg-icons/content/add-circle-outline';
 // import AddCircle from 'material-ui/svg-icons/content/add-circle-outline';
-import FontIcon from 'material-ui/FontIcon';
 import ContentRemove from 'material-ui/svg-icons/content/remove';
 import ContentAdd from 'material-ui/svg-icons/content/link';
 import style from '../../style'
@@ -26,9 +25,6 @@ const BreakIcon = ({onTouchTap}) => (
                 onTouchTap={onTouchTap}><ContentRemove/></FloatingButton>
   </span>
 )
-
-const removeRelationshipIcon = <FontIcon className="material-icons">
-  remove relationship</FontIcon>;
 
 const stripAndParse = (str) => {
   return parseInt( str.replace(/\D/g,''), 10 );

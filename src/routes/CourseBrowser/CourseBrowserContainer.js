@@ -21,8 +21,17 @@ const mapStateToProps = (state, ownProps) => {
     )
   });
 
+  var links = [];
+  state.schedPrefReducer.campus.forEach( preference => {
+    if(preference != null) {
+      links.push(preference);
+    }
+  });
+  links.push(state.schedPrefReducer.semester);
+
   return {
     helpActive: state.courseBrowserReducer.isHelpActive,
+    activeLinks: links,
     subjectIDs: filteredIDs,
     currentFilter: filter
   }

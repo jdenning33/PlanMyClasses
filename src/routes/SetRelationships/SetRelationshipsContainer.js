@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
-import ScheduleBuilderComponent from './ScheduleBuilderComponent'
-import { scheduleBuilder } from './scheduleBuilderDuck'
+import SetRelationshipsComponent from './SetRelationshipsComponent'
+import { scheduleBuilder } from '../ScheduleBuilder/scheduleBuilderDuck'
 import { COLLECTIONS_ENUM } from '../../dataHandling/dataCache'
 import { setRoute }     from '../../routes/AppRouter'
 
@@ -11,13 +11,6 @@ const mapStateToProps = (state) => {
   let stackMap = state.scheduleBuilderReducer.desiredMap;
   let courseIDs = Object.keys(stackMap.data);
   let courses = state.dataCacheReducer.data.courses;
-  let sections = state.dataCacheReducer.data.sections;
-
-  let activeCRNs = stackMap.activeCourseIDs.map((id) => {
-    let section = sections[stackMap.data[id].activeSectionID];
-    if(section) return section.crn;
-    return null;
-  })
 
   var links = [];
   state.schedPrefReducer.campus.forEach( preference => {
@@ -33,7 +26,6 @@ const mapStateToProps = (state) => {
     stackMap: stackMap,
     courses: courses,
     activeLinks: links,
-    activeCRNs: activeCRNs,
     preferencesActive: state.scheduleBuilderReducer.isPreferencesActive,
     desriedActive: state.scheduleBuilderReducer.isDesiredActive,
     setRelationship: state.scheduleBuilderReducer.setRelationship
@@ -60,9 +52,6 @@ const mapDispatchToProps = (dispatch) => {
     togglePreferences: () => {
       dispatch( scheduleBuilder.togglePreferencesCard() )
     },
-    toggleDesired: () => {
-      dispatch( scheduleBuilder.toggleDesiredCard() )
-    },
     toggleSetRelationship: (stackMap) => {
       dispatch( scheduleBuilder.toggleSetRelationship(stackMap) )
     },
@@ -72,9 +61,9 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const ScheduleBuilderContainer = connect(
+const SetRelationshipsContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(ScheduleBuilderComponent)
+)(SetRelationshipsComponent)
 
-export default ScheduleBuilderContainer
+export default SetRelationshipsContainer

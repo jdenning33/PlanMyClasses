@@ -6,7 +6,8 @@ import Paper from 'material-ui/Paper';
 
 const SectionPaper = ({section, times, active}) => {
   let z = (active)?1:2;
-  let iStyle = (active)?style.activeCarouselPaper : style.carouselPaper;
+  let iStyle = (active)?style.sectionActiveCarouselPaper :
+                        style.sectionCarouselPaper;
 
   return (
     <Paper style={iStyle} zDepth={z}>

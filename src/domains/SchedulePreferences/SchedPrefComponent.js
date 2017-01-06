@@ -1,8 +1,7 @@
 import React, { PropTypes } from 'react'
 import PrefLinksComponent from './PrefLinks/PrefLinksComponent'
-import { CAMPUS_ENUM, SEMESTER_ENUM, DESIRE_ENUM} from './schedPrefDuck'
+import { CAMPUS_ENUM, SEMESTER_ENUM } from './schedPrefDuck'
 import style from '../../style'
-import { Paper } from 'material-ui'
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 
 

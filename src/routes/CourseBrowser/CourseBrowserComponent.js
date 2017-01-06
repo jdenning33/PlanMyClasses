@@ -1,13 +1,37 @@
 import React from 'react';
 // import SubjectsComponent from '../../domains/Subject/SubjectsComponent'
 import SubjectsContainer from '../../domains/Subject/SubjectsContainer'
+import SchedPrefContainer from '../../domains/SchedulePreferences/SchedPrefContainer'
 import BottomNavigationContainer from '../../domains/Navigation/BottomNavigationContainer'
 import AppBarComponent from '../../domains/Navigation/AppBarComponent'
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 
-
 import style from '../../style'
+
+import {Card, CardHeader, CardText} from 'material-ui/Card';
+import Chip from 'material-ui/Chip';
+
+
+let SchedulePreferencesCard = ({activeLinks} ) => (
+  <Card>
+    <CardHeader
+      title={'Preferences'}
+      actAsExpander={true}
+      showExpandableButton={true}
+    />
+
+  <CardText style={style.wrapper} expandable={false}>
+      {activeLinks.map((link) =>
+        <Chip labelStyle={style.chipLabel}
+              style={style.chip}>{link.name}</Chip>)}
+    </CardText>
+
+    <CardText expandable={true}>
+      <SchedPrefContainer />
+    </CardText>
+  </Card>
+)
 
 
 let SearchBar = ({ currentFilter, updateFilter }) => (
@@ -24,7 +48,7 @@ let SearchBar = ({ currentFilter, updateFilter }) => (
 )
 
 class CourseBrowserComponent extends React.Component{
-  constructor( {subjectIDs, helpActive, currentFilter,
+  constructor( {subjectIDs, helpActive, currentFilter, activeLinks,
                   openHelp, closeHelp, loadSubjects, updateFilter} ){
     super();;
   }
@@ -43,6 +67,10 @@ class CourseBrowserComponent extends React.Component{
                         closeHelp={my.closeHelp}
                         title={'Course Browser'}
                         helpText={'How to use the course browser:'}/>
+        <br />
+        <div>
+          <SchedulePreferencesCard activeLinks={my.activeLinks} />
+        </div>
         <br />
         <div>
           <SubjectsContainer subjectIDs={my.subjectIDs} />

@@ -23,7 +23,7 @@ const BottomNavigationComponent = ({changeRoute}) => {
   let index = -1;
   if(path === '/') index = -1;
   if(path === '/schedule-builder') index = 2;
-  if(path === '/relationships') index = 1;
+  if(path === '/set-relationships') index = 1;
   if(path === '/course-browser') index = 0;
 
   return (
@@ -37,7 +37,7 @@ const BottomNavigationComponent = ({changeRoute}) => {
         <BottomNavigationItem
           label="RELATIONSHIPS"
           icon={setIcon}
-          onTouchTap={() => changeRoute(ROUTE_ENUM.COURSE_BROWSER)}
+          onTouchTap={() => changeRoute(ROUTE_ENUM.SET_RELATIONSHIPS)}
         />
         <BottomNavigationItem
           label="SCHEDULE"

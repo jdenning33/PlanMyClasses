@@ -31,7 +31,7 @@ const style = {
     flex:'1 1',
     zIndex:'99',
     backgroundColor: '#fff',
-    marginRight: '20px',
+    marginRight: '2px',
     marginLeft: '-15px',
     marginTop: '-10px',
   },
@@ -39,7 +39,7 @@ const style = {
     flex:'1 1',
     zIndex:'99',
     backgroundColor: '#fff',
-    marginLeft: '30px',
+    marginLeft: '2px',
     marginRight: '-15px',
     marginTop: '-10px',
   },
@@ -66,6 +66,7 @@ const style = {
   appPage:{
     margin: '0 auto',
     marginTop: '70px',
+    marginBottom: '80px',
     padding: '0px',
     width: '100%',
     minWidth: '300px',
@@ -96,13 +97,35 @@ const style = {
 
 
 
-  carouselPaper: {
+  courseCarouselPaper: {
     padding: '2px',
     textAlign: 'center',
+    backgroundColor:'#F8BBD0',
   },
-  activeCarouselPaper: {
+  courseActiveCarouselPaper: {
     padding: '7px',
     textAlign: 'center',
+    backgroundColor:'#4DD0E1',
+  },
+  timeCarouselPaper: {
+    padding: '2px',
+    textAlign: 'center',
+    backgroundColor:'#FCE4EC',
+  },
+  timeActiveCarouselPaper: {
+    padding: '7px',
+    textAlign: 'center',
+    backgroundColor:'#80DEEA',
+  },
+  sectionCarouselPaper: {
+    padding: '2px',
+    textAlign: 'center',
+    backgroundColor:'#FCE4EC',
+  },
+  sectionActiveCarouselPaper: {
+    padding: '7px',
+    textAlign: 'center',
+    backgroundColor:'#80DEEA',
   },
   carouselItem: {
     display: 'inline-block',
@@ -116,6 +139,12 @@ const style = {
     paddingBottom:'1px',
     margin: '0px 3px',
     textAlign:'center',
+  },
+  carouselCard:{
+    backgroundColor:'#4DD0E1',
+  },
+  activeCarouselCard:{
+    backgroundColor:'#F06292',
   },
   courseCarousel: {
     margin: '0 auto',
@@ -131,7 +160,7 @@ const style = {
   },
   courseStack: {
     padding: '5px 0px',
-    width: '100%',
+    width: '80%',
     minWidth: '300px',
     maxWidth: '600px',
     margin: '0 auto',

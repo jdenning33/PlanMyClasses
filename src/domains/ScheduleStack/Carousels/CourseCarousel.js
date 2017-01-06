@@ -6,7 +6,8 @@ import Paper from 'material-ui/Paper';
 
 const CoursePaper = ({course, active}) => {
   let z = (active)?1:2;
-  let iStyle = (active)?style.activeCarouselPaper : style.carouselPaper;
+  let iStyle = (active)?style.courseActiveCarouselPaper :
+                        style.courseCarouselPaper;
   return (
     <Paper style={iStyle} zDepth={z}>
       <div>

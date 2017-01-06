@@ -5,8 +5,7 @@ import CourseCarousel from './Carousels/CourseCarousel'
 import PrimaryTimeCarousel from './Carousels/PrimaryTimeCarousel'
 import SectionCarousel from './Carousels/SectionCarousel'
 import { getReducedCourseJSON } from '../ReducedCourse/ReducedCourseJSON'
-import Paper from 'material-ui/Paper';
-
+import Divider from 'material-ui/Divider'
 
  const getRelationShipSize = (relationship, courses) => {
    let size = 0;
@@ -54,6 +53,8 @@ class ScheduleStackComponent extends React.Component{
         //Caclulate our primary time info
         activeCourse = my.courses[activeCourseID];
         primaryTimesJSON = getReducedCourseJSON(activeCourse, my.sections);
+        primaryTimesJSON = primaryTimesJSON.filter(
+          time => (time.primaryTime!==undefined) );
 
         //Hopefully we already have an active section ID
         activeSectionID = my.stackMap.data[activeCourseID].activeSectionID;
@@ -67,8 +68,14 @@ class ScheduleStackComponent extends React.Component{
               sectionID === activeSectionID
             ))
           ));
-        }else{
-          activeTime = primaryTimesJSON[0];
+        }
+
+        if(!activeSectionID ||
+            !activeTime ||
+            !activeTime.primaryTime){
+          activeTime =
+            primaryTimesJSON.find(time=>
+              time.primaryTime !== undefined);
         }
 
         sectionJSONs = activeTime.sectionIDs;
@@ -81,6 +88,9 @@ class ScheduleStackComponent extends React.Component{
         <div  key={activeCourseID}
               style={style.courseStack}>
 
+              {relationship !== relationships[0] ?
+                <Divider /> : null }
+          <br />
           <CourseCarousel   courseIDs={relationship}
                             activeCourseID={activeCourseID}
                             courses={my.courses}
