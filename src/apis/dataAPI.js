@@ -13,11 +13,19 @@ const dataAPI = {
   // request can be thought of as an Action passed to redux
   get: ( request ) => new Promise(
     (resolve, reject) => {
-      axios.get(`${request.type.url}/${request.dataID}`)
+      if(request.dataID){
+        axios.get(`${request.type.url}/${request.dataID}`)
         .then( res => {
           resolve(res.data);
         })
         .catch( err => console.error(err) );
+      }else{
+        axios.get(`${request.type.url}`)
+        .then( res => {
+          resolve(res.data);
+        })
+        .catch( err => console.error(err) );
+      }
     }),
 
   // request needs a type (i.e. 'subject') and data to add

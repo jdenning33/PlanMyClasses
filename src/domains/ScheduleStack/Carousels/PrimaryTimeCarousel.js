@@ -1,14 +1,21 @@
 import React from 'react';
 import style from '../../../style'
 import Carousel from '../../../Components/Carousel'
+import Paper from 'material-ui/Paper';
 
-const TimeInfo = ({primaryTime}) => {
-  return(
-    <div>
-      {primaryTime.days}: {primaryTime.start}-{primaryTime.end}
-    </div>
+
+const TimePaper = ({primaryTime, active}) => {
+  let z = (active)?1:2;
+  let iStyle = (active)?style.activeCarouselPaper : style.carouselPaper;
+  return (
+    <Paper style={iStyle} zDepth={z}>
+      <div>
+        {primaryTime.days}: {primaryTime.start}-{primaryTime.end}
+      </div>
+    </Paper>
   )
 }
+
 
 const PrimaryTimeCarousel = ({timesJSON, activeTime, afterChange}) => {
   let sortedTimes = timesJSON.sort( (a,b) => {
@@ -26,7 +33,7 @@ const PrimaryTimeCarousel = ({timesJSON, activeTime, afterChange}) => {
     return(
       <div  style={iStyle}
              key={index}>
-        <TimeInfo   primaryTime={primaryTime}
+        <TimePaper   primaryTime={primaryTime}
                     active={active} />
       </div>
     )

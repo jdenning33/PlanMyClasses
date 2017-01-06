@@ -1,35 +1,41 @@
 import React, { PropTypes } from 'react'
 import PrefLinksComponent from './PrefLinks/PrefLinksComponent'
 import { CAMPUS_ENUM, SEMESTER_ENUM, DESIRE_ENUM} from './schedPrefDuck'
+import style from '../../style'
+import { Paper } from 'material-ui'
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+
 
 const SchedPrefComponent = ( {activeLinks,  setCampusClick,
                                             setSemesterClick,
                                             setOnlineDesireClick} ) => {
   return (
     <div>
-      <div>
-        <div>
-          <b>Campus: </b>
-          <PrefLinksComponent ENUM={CAMPUS_ENUM}
-                              activeLinks={activeLinks}
-                              action={(campus) => setCampusClick(campus)} />
-        </div>
+      <Card>
+        <CardHeader
+          title={'Campus'}
+          actAsExpander={true}
+          showExpandableButton={true}
+        />
+        <CardActions style={style.courseBrowserCard} expandable={true}>
+            <PrefLinksComponent ENUM={CAMPUS_ENUM}
+                                activeLinks={activeLinks}
+                                action={(campus) => setCampusClick(campus)} />
+        </CardActions>
+      </Card>
 
-        <div>
-          <b>Change Semester: </b>
+      <Card>
+        <CardHeader
+          title={'Semester'}
+          actAsExpander={true}
+          showExpandableButton={true}
+        />
+        <CardText style={style.courseBrowserCard} expandable={true}>
           <PrefLinksComponent ENUM={SEMESTER_ENUM}
                               activeLinks={activeLinks}
                               action={(semester) => setSemesterClick(semester)} />
-        </div>
-
-        <div>
-          <b>Online: </b>
-          <PrefLinksComponent ENUM={DESIRE_ENUM}
-                              activeLinks={activeLinks}
-                              action={(desire) => setOnlineDesireClick(desire)} />
-        </div>
-
-      </div>
+        </CardText>
+      </Card>
     </div>
   )
 }

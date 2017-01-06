@@ -1,11 +1,9 @@
 import React from 'react';
-import ClickableContainer from '../../domains/Clickable/ClickableContainer';
 import { COLLECTIONS_ENUM } from '../../dataHandling/dataCache'
 import style from '../../style'
 
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
-import Toggle from 'material-ui/Toggle';
+import {Card, CardHeader, CardText} from 'material-ui/Card';
+// import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 
 
 const SectionCard = ( {section, sectionID, expanded,

@@ -1,6 +1,8 @@
 import { connect } from 'react-redux'
 import ScheduleBuilderComponent from './ScheduleBuilderComponent'
+import { scheduleBuilder } from './scheduleBuilderDuck'
 import { COLLECTIONS_ENUM } from '../../dataHandling/dataCache'
+import { setRoute }     from '../../routes/AppRouter'
 
 
 const mapStateToProps = (state) => {
@@ -8,10 +10,25 @@ const mapStateToProps = (state) => {
   // let courseIDs = state.scheduleBuilderReducer.desiredIDs;
   let stackMap = state.scheduleBuilderReducer.desiredMap;
   let courseIDs = Object.keys(stackMap.data);
+  let courses = state.dataCacheReducer.data.courses;
+
+  var links = [];
+  state.schedPrefReducer.campus.forEach( preference => {
+    if(preference != null) {
+      links.push(preference);
+    }
+  });
+  links.push(state.schedPrefReducer.semester);
 
   return {
+    helpActive: state.scheduleBuilderReducer.isHelpActive,
     courseIDs: courseIDs,
     stackMap: stackMap,
+    courses: courses,
+    activeLinks: links,
+    preferencesActive: state.scheduleBuilderReducer.isPreferencesActive,
+    desriedActive: state.scheduleBuilderReducer.isDesiredActive,
+    setRelationship: state.scheduleBuilderReducer.setRelationship
   }
 }
 
@@ -25,6 +42,24 @@ const mapDispatchToProps = (dispatch) => {
         default:
 
       }
+    },
+    openHelp: () => {
+      dispatch( scheduleBuilder.openHelp() )
+    },
+    closeHelp: () => {
+      dispatch( scheduleBuilder.closeHelp() )
+    },
+    togglePreferences: () => {
+      dispatch( scheduleBuilder.togglePreferencesCard() )
+    },
+    toggleDesired: () => {
+      dispatch( scheduleBuilder.toggleDesiredCard() )
+    },
+    toggleSetRelationship: (stackMap) => {
+      dispatch( scheduleBuilder.toggleSetRelationship(stackMap) )
+    },
+    changeRoute: (route) => {
+      setRoute(route)
     }
   }
 }

@@ -10,6 +10,11 @@ const mapStateToProps = (state, ownProps) => {
 
   let course = state.dataCacheReducer.data.courses[ownProps.courseID];
 
+  //check if the card is already in the desired course load
+  let isDesired = false;
+  let stackMap = state.scheduleBuilderReducer.desiredMap;
+  isDesired = stackMap.data[ownProps.courseID] ? true:false;
+
   //decide if the card should be expanded based on the expandedIDs
   let expanded = false;
   let expandedIDs;
@@ -18,16 +23,11 @@ const mapStateToProps = (state, ownProps) => {
     expanded = expandedIDs.some((id) => ownProps.courseID===id);
   }
 
-  //check if the card is already in the desired course load
-  let isDesired = false;
-  let stackMap = state.scheduleBuilderReducer.desiredMap;
-  isDesired = stackMap.data[ownProps.courseID] ? true:false;
-
   return {
     course: course,
     courseID: ownProps.courseID,
-    expanded: expanded,
     isDesired: isDesired,
+    expanded: expanded,
     fetchingIDs: state.dataCacheReducer.fetchingIDs,
   }
 }
@@ -40,11 +40,11 @@ const mapDispatchToProps = (dispatch) => {
                                           dataIDs: [dataID] }
                                         ) );
     },
-    cardClicked: (dataID) => {
-      dispatch( courseBrowser.cardClicked(dataID) );
-    },
     toggleDesiredCourse: (course) => {
       dispatch( scheduleBuilder.toggleDesiredCourse(course) );
+    },
+    cardClicked: (dataID) => {
+      dispatch( courseBrowser.cardClicked(dataID) );
     }
   }
 }

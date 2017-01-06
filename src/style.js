@@ -1,35 +1,150 @@
 //style.js
 const style = {
+  orIcon: {
+    float:'right',
+    // height:'35px',
+    width:'100%',
+    marginTop: '-30px',
+    // marginBottom: '-18px',
+    textAlign: 'center',
+  },
+  searchBarContainer: {
+    textAlign: 'center',
+    position: 'fixed',
+    bottom: '56px',
+    left: '0px',
+    // marginLeft:'-8px',  //offset the boddy padding
+    width: '100vw',
+  },
+  searchBar: {
+    margin: '0 auto',
+    width:'100%',
+  },
+  window: {
+    height: '100%',
+    width: '100%',
+    // minHeight: '100vh',
+    // minWidth: '100vw',
+    display: 'flex',
+  },
+  contentHiderLeft: {
+    flex:'1 1',
+    zIndex:'99',
+    backgroundColor: '#fff',
+    marginRight: '20px',
+    marginLeft: '-15px',
+    marginTop: '-10px',
+  },
+  contentHiderRight : {
+    flex:'1 1',
+    zIndex:'99',
+    backgroundColor: '#fff',
+    marginLeft: '30px',
+    marginRight: '-15px',
+    marginTop: '-10px',
+  },
+  chip: {
+    margin: '0 4px',
+  },
+  chipLabel: {
+    fontSize: '10px',
+  },
+  wrapper: {
+    display: 'flex',
+    padding: '0 16px',
+    flexWrap: 'wrap',
+  },
   header:{
-    position: 'absolute',
-    left:'0',
-    top:'0',
-    width:'100%'
+    position:'fixed',
+    top:'0px',
+    left: '0px',
+    zIndex: '100',
+    margin: '0 auto',
+    width: '100vw',
+    textAlign: 'center',
   },
   appPage:{
-    // position: 'relative',
-    height: '100%',
+    margin: '0 auto',
+    marginTop: '70px',
+    padding: '0px',
+    width: '100%',
+    minWidth: '300px',
+    maxWidth: '500px',
+
+    minHeight: '100vh',
+    overflowX: 'hidden !important',
   },
-  bottomNav: {
-    position: 'absolute',
-    left: '0',
+  footer: {
+    position: 'fixed',
     bottom: '0',
-    width: '100%'
+    right: '0',
+    zIndex: '100',
+    width: '100vw',
   },
+
+  addCourse: {
+    width:'100%',
+    textAlign: 'center',
+  },
+
   carousel: {
     minWidth:'150px',
     maxWidth:'300px',
     margin:'0 auto',
-    fontFamily:'Helvetica, sans-serif',
     backgroundColor:'#aaaaaa'
   },
+
+
+
+  carouselPaper: {
+    padding: '2px',
+    textAlign: 'center',
+  },
+  activeCarouselPaper: {
+    padding: '7px',
+    textAlign: 'center',
+  },
+  carouselItem: {
+    display: 'inline-block',
+    width:'auto',
+    margin: '5px 0px',      //active padding - regular padding
+    textAlign:'bottom',
+  },
+  activeCarouselItem: {
+    display: 'inline-block',
+    width:'auto',
+    paddingBottom:'1px',
+    margin: '0px 3px',
+    textAlign:'center',
+  },
+  courseCarousel: {
+    margin: '0 auto',
+    padding: '0px',
+  },
+  primaryTimeCarousel: {
+    margin: '0 auto',
+    padding: '0px',
+  },
+  sectionCarousel: {
+    margin: '0 auto',
+    padding: '0px',
+  },
+  courseStack: {
+    padding: '5px 0px',
+    width: '100%',
+    minWidth: '300px',
+    maxWidth: '600px',
+    margin: '0 auto',
+    marginBottom: '5px',
+  },
+  scheduleStackCard: {
+
+  },
   scheduleBuilder: {
-    flex: '1',
     minWidth:'200px',
     maxWidth:'400px',
     margin:'0 auto',
-    padding: '15px',
-    fontFamily:'Roboto, sans-serif',
+    padding: '50px',
     backgroundColor:'#dddddd'
   },
   courseBrowserCard: {
@@ -53,116 +168,8 @@ const style = {
     textAlign:'center',
     fontWeight: 'bold',
   },
-  carouselItem: {
-    display: 'inline-block',
-    width:'auto',
-    verticalAlign:'top',
-    // maxWidth:'200px',
-    // margin:'2px',
-    // marginBottom:'10px',
-    padding:'5px',
-    paddingBottom: '0px',
-    fontFamily:'Helvetica, sans-serif',
-    backgroundColor:'#444444',
-    textAlign:'center',
-  },
-  activeCarouselItem: {
-    display: 'inline-block',
-    width:'auto',
-    verticalAlign:'top',
-    // maxWidth:'400px',
-    // margin:'2px',
-    // marginBottom:'10px',
-    padding:'5px',
-    paddingBottom:'10px',
-    fontFamily:'Roboto, sans-serif',
-    backgroundColor:'#aaaaaa',
-    textAlign:'center',
-  },
-  stackCarousel: {
-    width:'auto',
-    marginBottom:'0px',
-    padding:'0px',
-    fontFamily:'Helvetica, sans-serif',
-    backgroundColor:'#ffffff',
-  },
-  primaryTimeCarousel: {
-    width: '70%',
-    margin: '0 auto',
-    padding: '0px',
-    backgroundColor: '#ffffff',
-  },
-  courseStack: {
-    width:'100%',
-    marginBottom:'10px',
-    padding:'0px',
-    fontFamily:'Helvetica, sans-serif',
-    backgroundColor:'#00ffff',
-    borderStyle:'solid',
-    borderColor:'#ff0000',
-  },
 
 
-
-  //not mine
-  commentList: {
-    border:'1px solid #f1f1f1',
-    padding:'0 12px',
-    maxHeight:'70vh',
-    overflow:'scroll'
-  },
-  comment: {
-    backgroundColor:'#fafafa',
-    margin:'10px',
-    padding:'3px 10px',
-    fontSize:'.85rem'
-  },
-  commentForm: {
-    margin:'10px',
-    display:'flex',
-    flexFlow:'row wrap',
-    justifyContent:'space-between'
-  },
-  commentFormAuthor: {
-    minWidth:'150px',
-    margin:'3px',
-    padding:'0 10px',
-    borderRadius:'3px',
-    height:'40px',
-    flex:'2'
-  },
-  commentFormText: {
-    flex:'4',
-    minWidth:'400px',
-    margin:'3px',
-    padding:'0 10px',
-    height:'40px',
-    borderRadius:'3px'
-  },
-  commentFormPost: {
-    minWidth:'75px',
-    flex:'1',
-    height:'40px',
-    margin:'5px 3px',
-    fontSize:'1rem',
-    backgroundColor:'#A3CDFD',
-    borderRadius:'3px',
-    color:'#fff',
-    textTransform:'uppercase',
-    letterSpacing:'.055rem',
-    border:'none'
-  },
-  updateLink: {
-    textDecoration:'none',
-    paddingRight:'15px',
-    fontSize:'.7rem'
-  },
-  deleteLink: {
-    textDecoration:'none',
-    paddingRight:'15px',
-    fontSize:'.7rem',
-    color:'red'
-  }
 }
 
 module.exports = style;

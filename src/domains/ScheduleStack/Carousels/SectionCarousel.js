@@ -1,18 +1,38 @@
 import React from 'react';
 import style from '../../../style'
 import Carousel from '../../../Components/Carousel'
+import Paper from 'material-ui/Paper';
 
-const SectionInfo = ({sectionID, sections, times, active}) => {
-  return(
-    <div>
-      {times[0] ? <span>{times[0].days}: {times[0].start}-{times[0].end}</span> :
-                    <div>no times</div>}
-      {/* {acitve ?
-        <PrimaryTimeCarousel primaryTimes={stackMap} />
-        : null} */}
-    </div>
+
+const SectionPaper = ({section, times, active}) => {
+  let z = (active)?1:2;
+  let iStyle = (active)?style.activeCarouselPaper : style.carouselPaper;
+
+  return (
+    <Paper style={iStyle} zDepth={z}>
+      <div>
+        {times.length ?
+          times.map( (time, index) => (
+            <span key={index}>
+              {time.days}: {time.start}-{time.end}
+              <br />
+            </span>
+          ))
+          : null}
+        {section.instructors.length ?
+          section.instructors.map( (instructor, index) => (
+            <span key={index}>
+              {instructor.name.first} {instructor.name.last}
+              <br />
+            </span>
+          ))
+          : null}
+        {active? <span>crn: {section.crn}</span> : null}
+      </div>
+    </Paper>
   )
 }
+
 
 const SectionCarousel = ({sectionJSONs, activeSectionID, sections,
                           afterChange}) => {
@@ -22,7 +42,8 @@ const SectionCarousel = ({sectionJSONs, activeSectionID, sections,
   let elements =
   sectionIDs.map( (sectionID, index) => {
 
-    let times = sectionJSONs[sectionID];
+    let section = sections[sectionID];
+    let times = sectionJSONs[sectionID].secondaryTimes;
     let active = (sectionID === activeSectionID);
 
     let iStyle = active ? style.activeCarouselItem : style.carouselItem;
@@ -30,8 +51,7 @@ const SectionCarousel = ({sectionJSONs, activeSectionID, sections,
     return(
       <div  style={iStyle}
              key={index}>
-        <SectionInfo  sectionID={sectionID}
-                      sections={sections}
+        <SectionPaper section={section}
                       times={times}
                       active={active} />
       </div>
@@ -39,7 +59,7 @@ const SectionCarousel = ({sectionJSONs, activeSectionID, sections,
   });
 
   return(
-    <div style={style.stackCarousel}>
+    <div style={style.sectionCarousel}>
       <Carousel elements={elements}
                 initialSlide={
                   sectionIDs.findIndex( (id) =>

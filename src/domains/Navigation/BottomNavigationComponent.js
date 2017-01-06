@@ -1,15 +1,14 @@
-import React, {Component} from 'react';
+import React from 'react';
 import FontIcon from 'material-ui/FontIcon';
 import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
 import Paper from 'material-ui/Paper';
-import IconLocationOn from 'material-ui/svg-icons/communication/location-on';
 import { ROUTE_ENUM } from '../../routes/AppRouter';
 import style from '../../style'
 
 
-const recentsIcon = <FontIcon className="material-icons">build</FontIcon>;
-const favoritesIcon = <FontIcon className="material-icons">add</FontIcon>;
-const nearbyIcon = <IconLocationOn />;
+const buildIcon = <FontIcon className="material-icons">build</FontIcon>;
+const setIcon = <FontIcon className="material-icons">set</FontIcon>;
+const addIcon = <FontIcon className="material-icons">add</FontIcon>;
 
 /**
  * A simple example of `BottomNavigation`, with three labels and icons
@@ -23,21 +22,27 @@ const BottomNavigationComponent = ({changeRoute}) => {
 
   let index = -1;
   if(path === '/') index = -1;
-  if(path === '/schedule-builder') index = 0;
-  if(path === '/course-browser') index = 1;
+  if(path === '/schedule-builder') index = 2;
+  if(path === '/relationships') index = 1;
+  if(path === '/course-browser') index = 0;
 
   return (
-    <Paper style={style.bottomNav} zDepth={1}>
+    <Paper style={style.footer} zDepth={1}>
       <BottomNavigation selectedIndex={index}>
         <BottomNavigationItem
-          label="SCHEDULE"
-          icon={recentsIcon}
-          onTouchTap={() => changeRoute(ROUTE_ENUM.SCHEDULE_BUILDER)}
+          label="COURSES"
+          icon={addIcon}
+          onTouchTap={() => changeRoute(ROUTE_ENUM.COURSE_BROWSER)}
         />
         <BottomNavigationItem
-          label="COURSES"
-          icon={favoritesIcon}
+          label="RELATIONSHIPS"
+          icon={setIcon}
           onTouchTap={() => changeRoute(ROUTE_ENUM.COURSE_BROWSER)}
+        />
+        <BottomNavigationItem
+          label="SCHEDULE"
+          icon={buildIcon}
+          onTouchTap={() => changeRoute(ROUTE_ENUM.SCHEDULE_BUILDER)}
         />
       </BottomNavigation>
     </Paper>

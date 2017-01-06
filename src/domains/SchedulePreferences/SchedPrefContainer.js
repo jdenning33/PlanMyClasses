@@ -11,8 +11,6 @@ const mapStateToProps = (state, ownProps) => {
     }
   });
   links.push(state.schedPrefReducer.semester);
-  links.push(state.schedPrefReducer.online_desire);
-
 
   return {
     activeLinks: links

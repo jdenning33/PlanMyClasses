@@ -1,31 +1,42 @@
 import React from 'react';
-import ClickableContainer from '../Clickable/ClickableContainer';
 import { COLLECTIONS_ENUM } from '../../dataHandling/dataCache'
 import SectionsContainer from '../Section/SectionsContainer'
 import style from '../../style'
 
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
-import Toggle from 'material-ui/Toggle';
+import AddCircle from 'material-ui/svg-icons/content/add-circle-outline';
+import RemoveCircle from 'material-ui/svg-icons/content/remove-circle-outline';
 
+const toggleIcon = (isDesired, toggleDesiredCourse, course) => {
+  if(!isDesired){
+    return <AddCircle  onTouchTap={() => toggleDesiredCourse(course)}/>
+  } else {
+    return <RemoveCircle onTouchTap={() => toggleDesiredCourse(course)}/>
+  }
+}
 
-const CourseCard = ( {course, courseID, expanded,
-  cardClicked, toggleDesiredCourse} ) => (
+const CourseCard = ( {course, courseID, isDesired, toggleDesiredCourse,
+                          expanded, cardClicked} ) => (
 
-  <Card expanded={expanded} onExpandChange={() => cardClicked(courseID)}>
+  <Card expanded={expanded} onExpandChange={()=>cardClicked(courseID)}>
     <CardHeader
       title={course.title}
       subtitle={course.number}
       actAsExpander={true}
-      // showExpandableButton={true}
+      showExpandableButton={true}
+      openIcon={toggleIcon(isDesired, toggleDesiredCourse, course)}
+      closeIcon={toggleIcon(isDesired, toggleDesiredCourse, course)}
     />
     <CardText style={style.courseBrowserCard} expandable={true}>
       {course.description}
+      <br />
+      <br />
       <SectionsContainer sectionIDs={course.sectionIDs} />
     </CardText>
     <CardActions expandable={true}>
-      <FlatButton label="Add to Schedule"
-        onTouchTap={() => toggleDesiredCourse(course)} />
+      <FlatButton label={!isDesired? 'Add to Schedule' : 'Remove from Schedule'}
+                  onTouchTap={() => toggleDesiredCourse(course)} />
     </CardActions>
   </Card>
 
@@ -36,16 +47,10 @@ const LoadingComponent = ( ) => (
     loading
   </div>
 );
-const FailedComponent = ( ) => (
-  <div>
-    failed
-  </div>
-);
-
 
 class CourseComponent extends React.Component{
-  constructor({course, courseID, expanded, fetchingIDs,
-                    cardClicked, toggleDesiredCourse, getData}){
+  constructor({course, courseID, isDesired, fetchingIDs, expanded,
+                    toggleDesiredCourse, getData, cardClicked}){
     super();
   }
 

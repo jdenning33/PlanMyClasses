@@ -5,6 +5,7 @@ const initialState = {
   subjectIDs : ['586477cbc5d24f47c82d20f9',
                 '586477cbc5d24f47c82d20fa',
                 '586477cbc5d24f47c82d20fb'],
+  filter: '',
   isHelpActive: false,
 }
 
@@ -12,6 +13,7 @@ const initialState = {
 const CARD_CLICKED = 'courseBrowser/CARD_CLICKED';
 const OPEN_HELP = 'courseBrowser/OPEN_HELP';
 const CLOSE_HELP = 'courseBrowser/CLOSE_HELP';
+const UPDATE_FILTER = 'courseBrowser/UPDATE_FILTER';
 
 //  ACTION CREATORS
 export const courseBrowser = {
@@ -30,6 +32,12 @@ export const courseBrowser = {
   closeHelp: () => (
     {
       type: CLOSE_HELP
+    }
+  ),
+  updateFilter: (value) => (
+    {
+      type: UPDATE_FILTER,
+      value
     }
   )
 }
@@ -66,6 +74,11 @@ const courseBrowserReducer = (state = initialState, action) => {
     case CLOSE_HELP:
       return Object.assign({},state,{
         isHelpActive: false
+      });
+
+    case UPDATE_FILTER:
+      return Object.assign({},state,{
+        filter: action.value
       });
 
     default:

@@ -100,14 +100,24 @@ const fetchData = (request, dataIDs)  => new Promise(
   let promises = [];
   let allData = [];
 
-  dataIDs.forEach(dataID =>
+  if(dataIDs){
+    dataIDs.forEach(dataID =>
+      promises.push(dataAPI.get(
+      { type    : request.type,
+        dataID : dataID
+      })
+      .then((data) => allData.push(data))
+      .catch(err => console.log(err) ))
+    );
+  }else{
     promises.push(dataAPI.get(
-    { type    : request.type,
-      dataID : dataID
+    { type: request.type,
     })
-    .then((data) => allData.push(data))
-    .catch(err => console.log(err) ))
-  );
+    .then((data) => {
+      allData = allData.concat(data);
+    })
+    .catch(err => console.log(err) ));
+  }
 
   Promise.all(promises)
   .then(()=>resolve(allData))
@@ -123,9 +133,22 @@ export const dataCache = {
     (resolve, reject) => {
 
     let dataState = getState().dataCacheReducer;
-    let dataToFetch = isDataCached(request, dataState);
+    let dataToFetch;
+    if(request.dataIDs) dataToFetch = isDataCached(request, dataState);
 
-    if(dataToFetch.length){
+    if(!dataToFetch){
+      // dispatch( requestData(request) );
+      //fetch the data
+      fetchData(request, dataToFetch)
+      .then( (data) => {
+
+        //tell the ui that we've fetched the data
+        dispatch(receiveData(request, data));
+        resolve(data);
+      })
+      .catch(err => reject(err))
+    }
+    else if(dataToFetch.length){
       //tell the ui we are fetching data
       dispatch( requestData(request) );
       //fetch the data

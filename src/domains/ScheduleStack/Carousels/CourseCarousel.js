@@ -1,13 +1,21 @@
 import React from 'react';
 import style from '../../../style'
 import Carousel from '../../../Components/Carousel'
+import Paper from 'material-ui/Paper';
 
-const CourseInfo = ({course, active}) => (
-  <div>
-    {course.number} <br />
-    {course.title}
-  </div>
-)
+
+const CoursePaper = ({course, active}) => {
+  let z = (active)?1:2;
+  let iStyle = (active)?style.activeCarouselPaper : style.carouselPaper;
+  return (
+    <Paper style={iStyle} zDepth={z}>
+      <div>
+        {course.number} <br />
+        {course.title}
+      </div>
+    </Paper>
+  )
+}
 
 const CourseCarousel = ({courseIDs, activeCourseID, courses,
                             afterChange}) => {
@@ -20,16 +28,15 @@ const CourseCarousel = ({courseIDs, activeCourseID, courses,
     let iStyle = active ? style.activeCarouselItem : style.carouselItem;
 
     return(
-      <div  style={iStyle}
-            key={courseID}>
-        <CourseInfo course={course}
+      <div  key={courseID} style={iStyle}>
+        <CoursePaper course={course}
                     active={active} />
       </div>
     )
   });
 
    return(
-    <div style={style.stackCarousel}>
+     <div style={style.courseCarousel}>
       <Carousel elements={elements}
                 initialSlide={courseIDs.findIndex(id=>id===activeCourseID)}
                 afterChange={afterChange} />

@@ -3,7 +3,12 @@ const initialState = {
   // boolean/id if id is set, our desired courses will display an add to
   // button so we can set up class or's
   setRelationship: false,
+  isHelpActive: false,
+  isPreferencesActive: false,
+  isDesiredActive: false,
 
+  // Use this to set up relationships, then push to desiredMap
+  newRelationship: [],
   //realtionships contains the ids of all the courses.
   // each id is in an array. If there is an or relationship between two
   //  courses, then they are in the same array
@@ -48,6 +53,13 @@ const TOGGLE_DESIRED_SECTION  = 'scheduleBuilder/TOGGLE_DESIRED_SECTION'
 const SWITCH_ACTIVE_COURSE    = 'scheduleBuilder/SWITCH_ACTIVE_COURSE'
 const SWITCH_ACTIVE_SECTION   = 'scheduleBuilder/SWITCH_ACTIVE_SECTION'
 const CARD_CLICKED            = 'scheduleBuilder/CARD_CLICKED'
+const OPEN_HELP               = 'scheduleBuilder/OPEN_HELP';
+const CLOSE_HELP              = 'scheduleBuilder/CLOSE_HELP';
+const TOGGLE_PREFERENCES      = 'scheduleBuilder/TOGGLE_PREFERENCES'
+const TOGGLE_DESIRED          = 'scheduleBuilder/TOGGLE_DESIRED'
+const TOGGLE_SET_RELATIONSHIP = 'scheduleBuilder/TOGGLE_SET_RELATIONSHIP'
+const STAGE_NEW_RELATIONSHIP  = 'scheduleBuilder/STAGE_NEW_RELATIONSHIP'
+const BREAK_FROM_RELATIONSHIP = 'scheduleBuilder/BREAK_FROM_RELATIONSHIP'
 
 
 //  ACTION CREATORS
@@ -79,13 +91,50 @@ export const scheduleBuilder = {
       sectionID
     }
   },
+  openHelp: () => (
+    {
+      type: OPEN_HELP
+    }
+  ),
+  closeHelp: () => (
+    {
+      type: CLOSE_HELP
+    }
+  ),
+  togglePreferencesCard: () => (
+    {
+      type: TOGGLE_PREFERENCES
+    }
+  ),
+  toggleDesiredCard: () => (
+    {
+      type: TOGGLE_DESIRED
+    }
+  ),
+  toggleSetRelationship: () => (
+    {
+      type: TOGGLE_SET_RELATIONSHIP,
+    }
+  ),
+  stageNewRelationship: (courseID) => (
+    {
+      type: STAGE_NEW_RELATIONSHIP,
+      courseID
+    }
+  ),
+  breakFromRelationship: (courseID) => (
+    {
+      type: BREAK_FROM_RELATIONSHIP,
+      courseID
+    }
+  ),
 
   cardClicked: (cardID) => (
     {
       type: CARD_CLICKED,
       cardID: cardID
     }
-  ),
+  )
 }
 
 //  REDUCERS
@@ -158,6 +207,67 @@ const scheduleBuilderReducer = (state = initialState, action) => {
         desiredMap:desiredMap
       });
 
+    case OPEN_HELP:
+      return Object.assign({},state,{
+        isHelpActive: true
+      });
+    case CLOSE_HELP:
+      return Object.assign({},state,{
+        isHelpActive: false
+      });
+    case TOGGLE_PREFERENCES:
+      return Object.assign({},state,{
+        isPreferencesActive: !state.isPreferencesActive
+      });
+    case TOGGLE_DESIRED:
+      return Object.assign({},state,{
+        isDesiredActive: !state.isDesiredActive
+      });
+
+    case TOGGLE_SET_RELATIONSHIP:
+      let newDesiredMap = Object.assign({}, state.desiredMap);
+      if(state.setRelationship){
+        newDesiredMap.relationships = newDesiredMap.relationships.filter( rel => {
+          return rel.some( id => !state.newRelationship.some(id2 => id===id2))
+        })
+        newDesiredMap.relationships.push(state.newRelationship);
+        newDesiredMap.relationships =
+          newDesiredMap.relationships.filter((rel) => rel.length)
+      }
+      return Object.assign({},state,{
+        desiredMap: newDesiredMap,
+        setRelationship: !state.setRelationship,
+        newRelationship: []
+      });
+    case BREAK_FROM_RELATIONSHIP:
+      newDesiredMap = Object.assign({}, state.desiredMap);
+
+      //remove courseID from any existing relationships
+      newDesiredMap.relationships = newDesiredMap.relationships.map( rel =>
+        (rel.filter( (id) => id !== action.courseID))
+      );
+      //add the courseID to a new relationship
+      newDesiredMap.relationships.push([action.courseID]);
+      //filter any empty relationships
+      newDesiredMap.relationships =
+          newDesiredMap.relationships.filter((rel) => rel.length)
+
+      return Object.assign({},state,{
+        desiredMap: newDesiredMap,
+      });
+
+    case STAGE_NEW_RELATIONSHIP:
+      let relationship = [];
+      relationship = state.newRelationship.concat(relationship);
+
+      if(relationship.length && relationship.some(id => id===action.courseID)){
+        relationship = relationship.filter(id => id!==action.courseID);
+      }else{
+        relationship.push(action.courseID);
+      }
+      return Object.assign({},state,{
+        newRelationship: relationship
+      })
 
 
     case CARD_CLICKED:

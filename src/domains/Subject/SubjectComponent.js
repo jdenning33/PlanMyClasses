@@ -1,12 +1,9 @@
 import React from 'react';
-import ClickableContainer from '../../domains/Clickable/ClickableContainer';
 import { COLLECTIONS_ENUM } from '../../dataHandling/dataCache'
 import CoursesContainer from '../Course/CoursesContainer'
 import style from '../../style'
 
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
-import Toggle from 'material-ui/Toggle';
+import {Card, CardHeader, CardText} from 'material-ui/Card';
 
 
 const SubjectCard = ( {subject, subjectID, expanded, cardClicked} ) => (

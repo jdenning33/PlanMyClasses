@@ -1,55 +1,84 @@
 import React from 'react'
 import SchedPrefContainer from '../../domains/SchedulePreferences/SchedPrefContainer'
 import CoursesContainer from '../../domains/Course/CoursesContainer'
+import { ROUTE_ENUM } from '../../routes/AppRouter';
 // import SchedulesContainer from '../../domains/Schedule/SchedulesContainer'
 import ScheduleStackContainer from '../../domains/ScheduleStack/ScheduleStackContainer'
 import BottomNavigationContainer from '../../domains/Navigation/BottomNavigationContainer'
+import AppBarComponent from '../../domains/Navigation/AppBarComponent'
+
 import style from '../../style'
 
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
-import Toggle from 'material-ui/Toggle';
+import Chip from 'material-ui/Chip';
 
 
-let SchedulePreferencesCard = ({}) => (
-  <Card expanded={true} onExpandChange={() => null}>
+let SchedulePreferencesCard = ({activeLinks} ) => (
+  <Card>
     <CardHeader
       title={'Preferences'}
-      actAsExpander={false}
-      // showExpandableButton={true}
+      actAsExpander={true}
+      showExpandableButton={true}
     />
+
+  <CardText style={style.wrapper} expandable={false}>
+      {activeLinks.map((link) =>
+        <Chip labelStyle={style.chipLabel}
+              style={style.chip}>{link.name}</Chip>)}
+    </CardText>
+
     <CardText expandable={true}>
       <SchedPrefContainer />
     </CardText>
   </Card>
 )
 
-let DesiredCoursesCard = ({courseIDs, stackMap}) => (
-  <Card expanded={true} onExpandChange={() => null}>
+let DesiredCoursesCard = ({courseIDs, courses, stackMap, setRelationship,
+                                  toggleSetRelationship, changeRoute}) => (
+  <Card initiallyExpanded={false}>
     <CardHeader
       title={'Desired Courses'}
-      actAsExpander={false}
-      // showExpandableButton={true}
+      actAsExpander={true}
+      showExpandableButton={true}
     />
+
+   <CardText style={style.wrapper} expandable={false}>
+      {courses? stackMap.relationships.map( (relationship) => (
+        <Chip labelStyle={style.chipLabel} style={style.chip}>
+          {(courses[relationship[0]])?courses[relationship[0]].number : null}
+          {relationship.map(courseID => (
+            (courseID === relationship[0]) ? null :
+            <span> or {courses[courseID] ? courses[courseID].number : null}</span>
+            )
+          )}
+        </Chip>
+      )) : null}
+    </CardText>
+
     <CardText expandable={true}>
       {stackMap.relationships.map( (relationship) => (
         <div>
-          <CoursesContainer  courseIDs={relationship} />
+          <CoursesContainer
+            setRelationship={setRelationship}
+            courseIDs={relationship}
+            toggleSetRelationship={toggleSetRelationship}/>
           <br />
         </div>
       ))}
     </CardText>
     <CardActions expandable={true}>
-      <FlatButton label="New Relationship"
-        onTouchTap={() => null} />
+      <FlatButton label={!setRelationship?
+          "Set Relationship " : "Save Relationship"}
+        onTouchTap={() => toggleSetRelationship()} />
       <FlatButton label="Add Courses"
-        onTouchTap={() => null} />
+        onTouchTap={() => changeRoute(ROUTE_ENUM.COURSE_BROWSER)} />
     </CardActions>
   </Card>
-)
+);
 
 let ScheduleStackCard = ({stackMap, courseIDs}) => (
-  <Card expanded={true} onExpandChange={() => null}>
+  <Card style={style.scheduleStackCard} expanded={true} onExpandChange={() => null}>
     <CardHeader
       title={'Schedule Stack'}
       actAsExpander={false}
@@ -60,30 +89,47 @@ let ScheduleStackCard = ({stackMap, courseIDs}) => (
                               courseIDs={courseIDs} />
     </CardText>
   </Card>
-)
+);
 
-const ScheduleBuilderComponent = ( {courseIDs, stackMap} ) => (
+const ScheduleBuilderComponent = ( {
+    helpActive, courseIDs, stackMap, courses, activeLinks, setRelationship,
+              openHelp, closeHelp, toggleSetRelationship, changeRoute} ) => (
 
-  <div style={style.appPage}>
-    <div>
-      <SchedulePreferencesCard />
+  <div style={style.window}>
+    <div style={style.contentHiderLeft} />
+
+    <div style={style.appPage}>
+        <AppBarComponent  helpActive={helpActive}
+                          openHelp={openHelp}
+                          closeHelp={closeHelp}
+                          title={'Schedule Builder'}
+                          helpText={'How to use the schedule builder:'}/>
+      <br />
+      <div>
+        <SchedulePreferencesCard activeLinks={activeLinks} />
+      </div>
+      <br />
+      <div>
+        <DesiredCoursesCard courseIDs={courseIDs}
+                            setRelationship={setRelationship}
+                            stackMap={stackMap}
+                            courses={courses}
+                            changeRoute={changeRoute}
+                            toggleSetRelationship={toggleSetRelationship}/>
+      </div>
+      <br />
+      <div>
+        <ScheduleStackCard stackMap={stackMap}
+                                courseIDs={courseIDs} />
+      </div>
+      <div>
+        <BottomNavigationContainer />
+      </div>
+
+      <br />
     </div>
 
-    <br />
-
-    <div>
-      <DesiredCoursesCard courseIDs={courseIDs}
-                          stackMap={stackMap}/>
-    </div>
-
-    <br />
-
-    <div>
-      <ScheduleStackCard stackMap={stackMap}
-                              courseIDs={courseIDs} />
-    </div>
-
-    <BottomNavigationContainer />
+    <div style={style.contentHiderRight} />
   </div>
 )
 

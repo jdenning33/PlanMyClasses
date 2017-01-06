@@ -1,11 +1,13 @@
 import React from 'react'
-import LinkContainer from '../../Link/LinkContainer'
+import FlatButton from 'material-ui/FlatButton';
+
 
 //  Individual Link
 const SetPrefLink = ( {preference, active, action} ) => (
-  <LinkContainer  text={preference.name}
-                  active={active}
-                  clickAction={() => action(preference)} />
+  <FlatButton   label={preference.name}
+                primary={active}
+                onTouchTap={() => action(preference)} />
+
 )
 
 //  Displays a set of links delimmited by a '-'
@@ -16,16 +18,14 @@ const PrefLinksComponent = ( { ENUM, activeLinks, action } ) => {
       preferences.push(ENUM[preference]);
     }
   };
+  console.log(activeLinks);
 
   return (
     <span>
       {preferences.map((pref) => (
-          <span key={pref.key}>
-          { (pref.key !== 0)? <span> - </span> : <span /> }
           <SetPrefLink  preference={pref}
                         active={activeLinks.some( (p) => p===pref)}
                         action={(pref) => action(pref)} />
-          </span>
         )
       )}
     </span>

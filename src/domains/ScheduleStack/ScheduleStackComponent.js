@@ -5,9 +5,8 @@ import CourseCarousel from './Carousels/CourseCarousel'
 import PrimaryTimeCarousel from './Carousels/PrimaryTimeCarousel'
 import SectionCarousel from './Carousels/SectionCarousel'
 import { getReducedCourseJSON } from '../ReducedCourse/ReducedCourseJSON'
+import Paper from 'material-ui/Paper';
 
-
-// import ClickableContainer from '../../domains/Clickable/ClickableContainer';
 
  const getRelationShipSize = (relationship, courses) => {
    let size = 0;

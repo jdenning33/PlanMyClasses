@@ -2,63 +2,58 @@ import React from 'react';
 // import SubjectsComponent from '../../domains/Subject/SubjectsComponent'
 import SubjectsContainer from '../../domains/Subject/SubjectsContainer'
 import BottomNavigationContainer from '../../domains/Navigation/BottomNavigationContainer'
+import AppBarComponent from '../../domains/Navigation/AppBarComponent'
+import Paper from 'material-ui/Paper';
+import TextField from 'material-ui/TextField';
+
+
 import style from '../../style'
 
-import AppBar from 'material-ui/AppBar';
-import IconButton from 'material-ui/IconButton';
-import Help from 'material-ui/svg-icons/action/help-outline';
-import FlatButton from 'material-ui/FlatButton';
-import Dialog from 'material-ui/Dialog';
-import RaisedButton from 'material-ui/RaisedButton';
 
+let SearchBar = ({ currentFilter, updateFilter }) => (
+  <Paper zDepth={2} style={style.searchBarContainer}>
+    <TextField  hintText="filter results"
+                onChange={ e => updateFilter(e.target.value) }
+                value={currentFilter}
+                // floatingLabelText="MultiLine and FloatingLabel"
+                style={style.SearchBar}
+                fullWidth={true}
+                underlineShow={false} />
+  </Paper>
 
-const CourseBrowserAppBar = ({helpActive, openHelp, closeHelp}) => (
-  <div>
-    <AppBar
-      style={style.header}
-      title={<span>Course Browser</span>}
-      onTitleTouchTap={()=>null}
-      showMenuIconButton={false}
-      iconElementRight={
-        <IconButton onTouchTap={() => openHelp()}>
-          <Help />
-        </IconButton>}
-    />
-  <CourseBrowserHelp active={helpActive}
-                     open={openHelp}
-                     close={closeHelp} />
-  </div>
 )
 
-const CourseBrowserHelp = ({active, open, close}) => (
-  <div>
-    <Dialog
-      title="Course Browser Help"
-      modal={false}
-      open={active}
-      onRequestClose={() => close()}>
-      The actions in this window were passed in as an array of React objects.
-    </Dialog>
-  </div>
-  )
+class CourseBrowserComponent extends React.Component{
+  constructor( {subjectIDs, helpActive, currentFilter,
+                  openHelp, closeHelp, loadSubjects, updateFilter} ){
+    super();;
+  }
 
-const CourseBrowserComponent = ( {subjectIDs, helpActive,
-                                  openHelp, closeHelp} ) => {
+  componentWillMount(){
+    let my=this.props;
+    if(!my.subjectIDs.length) my.loadSubjects();
+  }
 
-  return (
-    <div style={style.appPage}>
-      <CourseBrowserAppBar  helpActive={helpActive}
-                            openHelp={openHelp}
-                            closeHelp={closeHelp}/>
-      <br />
-      <div>
-        <h3> Course Browser </h3>
-        <SubjectsContainer subjectIDs={subjectIDs} />
+  render(){
+    let my=this.props;
+    return (
+      <div style={style.appPage}>
+        <AppBarComponent helpActive={my.helpActive}
+                        openHelp={my.openHelp}
+                        closeHelp={my.closeHelp}
+                        title={'Course Browser'}
+                        helpText={'How to use the course browser:'}/>
+        <br />
+        <div>
+          <SubjectsContainer subjectIDs={my.subjectIDs} />
+        </div>
+        <br />
+        <SearchBar  currentFilter={my.currentFilter}
+                    updateFilter={my.updateFilter}/>
+        <BottomNavigationContainer />
       </div>
-      <div style={style.filler}></div>
-      <BottomNavigationContainer />
-    </div>
-  )
+    )
+  }
 }
 
 // CourseBrowserComponent.propTypes = {

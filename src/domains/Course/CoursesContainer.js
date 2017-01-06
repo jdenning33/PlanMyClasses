@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import CoursesComponent from './CoursesComponent'
+import { scheduleBuilder } from '../../routes/ScheduleBuilder/scheduleBuilderDuck'
 
 //Just requires an array of courseIDs
 const mapStateToProps = (state, ownProps) => {
@@ -17,12 +18,21 @@ const mapStateToProps = (state, ownProps) => {
   return {
     courses: myCourses,
     courseIDs: courseIDs,
+    setRelationship: ownProps.setRelationship,
+    toggleSetRelationship: ownProps.toggleSetRelationship,
+    stagedRelationship: state.scheduleBuilderReducer.newRelationship,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return{
-
+    stageNewRelationship: (relationship) => {
+      relationship.forEach(courseID =>
+        dispatch(scheduleBuilder.stageNewRelationship(courseID)))
+    },
+    breakFromRelationship: (courseID) => {
+      dispatch(scheduleBuilder.breakFromRelationship(courseID))
+    }
   }
 }
 
