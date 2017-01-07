@@ -3,7 +3,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var dataAPIrouter = require('./dataAPIrouter');
-var DB_LINK = process.env.DB_LINK;
+var DB_LINK = 'mongodb://jdenning33:qBert002@ds145138.mlab.com:45138/planmyclasses';
 
 //and create our instances
 var app = express();
